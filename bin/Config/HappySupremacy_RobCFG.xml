@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data ID="1" Name="屌丝玩家" GoldMin="4000000" GoldMax="20000000" VipMin="0" VipMax="1" />
+	<Data ID="2" Name="普通玩家" GoldMin="4000000" GoldMax="30000000" VipMin="1" VipMax="2" />
+	<Data ID="3" Name="土豪玩家" GoldMin="4000000" GoldMax="50000000" VipMin="3" VipMax="5" />
+</Root>

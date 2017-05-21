@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data RoomID="1" Deduct="0.01" DefaultStock="100000" Stock="0,100000,110000,120000,130000,140000,150000,160000,170000,180000" ScoreId="10,20,30,40,50,60,70,80,90,100" LuckyEx="100000" LuckyGoldRate="10000" LuckyIncBuff="2" LuckyDecBuff="-0.3" />
+	<Data RoomID="2" Deduct="0.01" DefaultStock="1000000" Stock="0,1000000,1100000,1200000,1300000,1400000,1500000,1600000,1700000,1800000" ScoreId="10,20,30,40,50,60,70,80,90,101" LuckyEx="200000" LuckyGoldRate="10000" LuckyIncBuff="2" LuckyDecBuff="-0.3" />
+	<Data RoomID="3" Deduct="0.01" DefaultStock="1500000" Stock="0,1000000,1500000,2000000,2500000,3000000,3500000,4000000,4500000,5000000" ScoreId="10,20,30,40,50,60,70,80,90,102" LuckyEx="300000" LuckyGoldRate="10000" LuckyIncBuff="2" LuckyDecBuff="-0.3" />
+</Root>

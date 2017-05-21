@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data ID="1" BetName="1爱好1" BetRate="10,50,10,10,10,10" />
+	<Data ID="2" BetName="1爱好2" BetRate="15,55,5,5,10,10" />
+	<Data ID="3" BetName="1爱好3" BetRate="5,60,5,5,15,10" />
+	<Data ID="4" BetName="1爱好4" BetRate="5,65,0,0,20,10" />
+	<Data ID="5" BetName="1爱好5" BetRate="5,65,0,5,15,10" />
+	<Data ID="6" BetName="2爱好1" BetRate="10,10,10,10,50,10" />
+	<Data ID="7" BetName="2爱好2" BetRate="10,15,5,5,55,10" />
+	<Data ID="8" BetName="2爱好3" BetRate="5,15,5,5,60,10" />
+	<Data ID="9" BetName="2爱好4" BetRate="0,25,0,0,65,10" />
+	<Data ID="10" BetName="2爱好5" BetRate="0,20,5,0,65,10" />
+	<Data ID="11" BetName="3爱好1" BetRate="15,25,15,15,15,15" />
+	<Data ID="12" BetName="3爱好2" BetRate="25,15,15,15,15,15" />
+	<Data ID="13" BetName="3爱好3" BetRate="15,15,25,15,15,15" />
+	<Data ID="14" BetName="3爱好4" BetRate="15,15,15,25,15,15" />
+	<Data ID="15" BetName="3爱好5" BetRate="15,15,15,15,25,15" />
+</Root>

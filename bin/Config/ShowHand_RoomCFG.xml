@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data RoomId="1" RoomName="烟花之巷" RoomMaxPlayerCount="100" TableMaxPlayerCount="10" IsOpen="1" EnterGoldCondition="1000" EnterTableGoldCondition="1000" IllegalQuitGoldCount="1" Ante="128" AndroidCount="5" RobMinGold="1000" RobMaxGold="31415926" RobMinVip="1" RobMaxVip="5" RoomAndroidYield="0.1" />
+	<Data RoomId="2" RoomName="风月之所" RoomMaxPlayerCount="100" TableMaxPlayerCount="50" IsOpen="1" EnterGoldCondition="1600000" EnterTableGoldCondition="1000" IllegalQuitGoldCount="1" Ante="128" AndroidCount="5" RobMinGold="1600000" RobMaxGold="31415927" RobMinVip="1" RobMaxVip="5" RoomAndroidYield="0.1" />
+	<Data RoomId="3" RoomName="鱼水之空" RoomMaxPlayerCount="100" TableMaxPlayerCount="100" IsOpen="1" EnterGoldCondition="6400000" EnterTableGoldCondition="1000" IllegalQuitGoldCount="1" Ante="128" AndroidCount="5" RobMinGold="6400000" RobMaxGold="31415928" RobMinVip="1" RobMaxVip="5" RoomAndroidYield="0.1" />
+</Root>

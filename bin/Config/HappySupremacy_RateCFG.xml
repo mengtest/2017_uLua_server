@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data Key="1" Name="顺门" Rate1="2" Rate2="0" />
+	<Data Key="2" Name="对门" Rate1="2" Rate2="0" />
+	<Data Key="3" Name="倒门" Rate1="2" Rate2="0" />
+	<Data Key="4" Name="顺对门" Rate1="2" Rate2="1" />
+	<Data Key="5" Name="倒对门" Rate1="2" Rate2="1" />
+	<Data Key="6" Name="顺倒门（桥）" Rate1="2" Rate2="1" />
+</Root>

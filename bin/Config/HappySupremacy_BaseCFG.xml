@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data Key="PlayerMaxCount" Value="10000" />
+	<Data Key="BetTime" Value="20" />
+	<Data Key="Odds_0" Value="800" />
+	<Data Key="Odds_1" Value="100" />
+	<Data Key="Odds_2" Value="1100" />
+	<Data Key="Odds_3" Value="1100" />
+	<Data Key="Odds_4" Value="95" />
+	<Data Key="Odds_5" Value="95" />
+	<Data Key="MinBankerCount" Value="0" />
+	<Data Key="HistoryMaxCount" Value="66" />
+	<Data Key="DefendRate" Value="-15" />
+	<Data Key="MaxRate" Value="20" />
+	<Data Key="IsOpenAdjust" Value="0" />
+	<Data Key="IsOpenGM" Value="0" />
+	<Data Key="ShuffleLimit" Value="9" />
+	<Data Key="BetLimitRate" Value="8" />
+	<Data Key="SystemDrawWater" Value="0" />
+	<Data Key="IsOpenRob" Value="1" />
+	<Data Key="PlayerMinCount" Value="30" />
+	<Data Key="RobMinCount" Value="30" />
+	<Data Key="RobMaxCount" Value="30" />
+	<Data Key="RobEnterMinTime" Value="5" />
+	<Data Key="RobEnterMaxTime" Value="15" />
+	<Data Key="RobAskBankerMin" Value="2" />
+	<Data Key="RobAskBankerMax" Value="10" />
+	<Data Key="WinStarCount" Value="0" />
+	<Data Key="AwardGetRate" Value="100" />
+	<Data Key="RobBetMin" Value="10000" />
+	<Data Key="RobBetMax" Value="20000" />
+</Root>

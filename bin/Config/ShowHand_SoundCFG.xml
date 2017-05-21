@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data SoundID="1" SoundName="背景音乐" SoundPath="Sound/background.mp3" SoundTime="30" />
+	<Data SoundID="2" SoundName="下注" SoundPath="Sound/sound-jetton.mp3" SoundTime="1" />
+	<Data SoundID="3" SoundName="输" SoundPath="Sound/lose-sound.mp3" SoundTime="1" />
+	<Data SoundID="4" SoundName="赢" SoundPath="Sound/win-sound.mp3" SoundTime="1" />
+	<Data SoundID="5" SoundName="showhand男" SoundPath="Sound/showhand_0.mp3" SoundTime="1" />
+	<Data SoundID="6" SoundName="showhand女" SoundPath="Sound/showhand_1.mp3" SoundTime="1" />
+	<Data SoundID="7" SoundName="闹钟" SoundPath="Sound/count-time-sound.mp3" SoundTime="3" />
+	<Data SoundID="8" SoundName="闹钟时间到了" SoundPath="Sound/clock-sound.mp3" SoundTime="3" />
+</Root>

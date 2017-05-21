@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data ID="1" BetName="闲1" BetRate="10,60,10,10,10" />
+	<Data ID="2" BetName="闲2" BetRate="15,65,5,5,10" />
+	<Data ID="3" BetName="闲3" BetRate="5,70,5,5,15" />
+	<Data ID="4" BetName="闲4" BetRate="5,75,0,0,20" />
+	<Data ID="5" BetName="闲5" BetRate="5,75,0,5,15" />
+	<Data ID="6" BetName="将1" BetRate="10,10,10,10,60" />
+	<Data ID="7" BetName="将2" BetRate="10,15,5,5,65" />
+	<Data ID="8" BetName="将3" BetRate="5,15,5,5,70" />
+	<Data ID="9" BetName="将4" BetRate="0,25,0,0,75" />
+	<Data ID="10" BetName="将5" BetRate="0,20,5,0,75" />
+	<Data ID="11" BetName="平衡1" BetRate="5,40,7,8,40" />
+	<Data ID="12" BetName="平衡2" BetRate="5,40,8,7,40" />
+	<Data ID="13" BetName="平衡3" BetRate="10,40,5,5,40" />
+	<Data ID="14" BetName="平衡4" BetRate="10,30,5,5,50" />
+	<Data ID="15" BetName="平衡5" BetRate="10,50,5,5,30" />
+</Root>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data ID="1" GoldCount="0" BetMax="2000000000" CanUseWeight="1" />
+	<Data ID="2" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2" />
+	<Data ID="3" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2,3" />
+	<Data ID="4" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2,3,4" />
+	<Data ID="5" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2,3,4,5" />
+	<Data ID="6" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2,3,4,5,6" />
+	<Data ID="7" GoldCount="0" BetMax="2000000000" CanUseWeight="1,2,3,4,5,6,7" />
+</Root>
