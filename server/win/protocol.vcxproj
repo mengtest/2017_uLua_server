@@ -219,8 +219,8 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>..\protocol\ProtocolUpdate.exe --import
-..\..\share\protocol\ProtocolUpdate.exe</Command>
+      <Command>
+      </Command>
       <Outputs>ProtocolUpdate</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
