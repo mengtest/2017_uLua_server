@@ -48,6 +48,9 @@
     <ClCompile Include="Landlord_RoomCFG.cpp">
       <Filter>config</Filter>
     </ClCompile>
+    <ClCompile Include="logic_table.cpp">
+      <Filter>game_logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_landlord.h" />
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="Landlord_RoomCFG.h">
       <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="logic_table.h">
+      <Filter>game_logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

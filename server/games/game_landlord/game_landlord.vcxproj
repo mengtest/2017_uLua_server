@@ -158,6 +158,7 @@
     <ClCompile Include="logic_player_robot.cpp" />
     <ClCompile Include="logic_room.cpp" />
     <ClCompile Include="logic_room_db.cpp" />
+    <ClCompile Include="logic_table.cpp" />
     <ClCompile Include="proc_game_landlord_protocol.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -178,6 +179,7 @@
     <ClInclude Include="logic_lobby.h" />
     <ClInclude Include="logic_player.h" />
     <ClInclude Include="logic_room.h" />
+    <ClInclude Include="logic_table.h" />
     <ClInclude Include="proc_game_landlord_protocol.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

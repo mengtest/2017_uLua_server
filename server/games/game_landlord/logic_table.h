@@ -3,34 +3,31 @@
 #include "logic_core.h"
 #include "proc_game_landlord_protocol.h"
 
-struct Landlord_RoomCFGData;
-class logic_room_db:public game_object
+class logic_table_db :public game_object
 {
 protected:
-	void create_room();
-	bool load_room();
-	void reflush_rate();//重置收支
+	void create_table();
+	bool load_table();
 public:
 	virtual void init_game_object() override;//注册属性
 	virtual bool store_game_object(bool to_all = false) override;//非数组对象必须实现此接口
 
-	Tfield<int16_t>::TFieldPtr		m_db_room_id;			//房间id
+	Tfield<int16_t>::TFieldPtr		m_db_table_id;			//房间id
 };
 
-class logic_room :public logic_room_db
+class logic_table :public logic_table_db
 {
 public:
-	logic_room(const Landlord_RoomCFGData* cfg, logic_lobby* _lobby);
-	~logic_room(void);
+	logic_table(int);
+	~logic_table(void);
 
-	void heartbeat( double elapsed );
-	uint16_t get_room_id();			//房间ID
+	void heartbeat(double elapsed);
+	uint16_t get_table_id();			//房间ID
 
-	uint16_t enter_room(LPlayerPtr player);		//进入房间
-	void leave_room(uint32_t playerid);			//离开房间
+	uint16_t enter_table(LPlayerPtr player);		//进入房间
+	void leave_table(uint32_t playerid);			//离开房间
 
-	const Landlord_RoomCFGData* get_room_cfg() const;
-	logic_lobby* get_lobby(){return m_lobby;};
+	logic_lobby* get_lobby() { return m_lobby; };
 public:
 	template<class T>
 	int broadcast_msg_to_client(T msg, uint32_t except_id = 0)
@@ -39,7 +36,7 @@ public:
 	};
 	int broadcast_msg_to_client(uint16_t packet_id, boost::shared_ptr<google::protobuf::Message> msg, uint32_t except_id);
 private:
-	const Landlord_RoomCFGData* m_cfg;
 	logic_lobby* m_lobby;
 	LPLAYER_MAP playerMap;		//所有玩家字典
+	int32_t m_tableId;
 };

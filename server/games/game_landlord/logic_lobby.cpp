@@ -5,13 +5,13 @@
 #include "time_helper.h"
 #include "game_db_log.h"
 #include "msg_type_def.pb.h"
+#include "Landlord_RoomCFG.h"
 
 logic_lobby::logic_lobby(void)
 :m_init(false)
 ,m_max_player(0)
-,m_check_cache(0.0)
 {
-	resetToday();
+	
 }
 
 logic_lobby::~logic_lobby(void)
@@ -20,16 +20,16 @@ logic_lobby::~logic_lobby(void)
 
 void logic_lobby::init_config()
 {
-	//landlord_RoomCFG::GetSingleton()->Load();
+	Landlord_RoomCFG::GetSingleton()->Load();
 }
 void logic_lobby::init_protocol()
 {
-	//init_proc_landlord_protocol();
+	init_proc_landlord_protocol();
 }
 
 void logic_lobby::init_room()
 {
-	/*const boost::unordered_map<int, landlord_RoomCFGData>& list = landlord_RoomCFG::GetSingleton()->GetMapData();
+	const boost::unordered_map<int, Landlord_RoomCFGData>& list = Landlord_RoomCFG::GetSingleton()->GetMapData();
 	for (auto it = list.begin(); it != list.end(); ++it)
 	{
 		if(!it->second.mIsOpen)
@@ -38,7 +38,7 @@ void logic_lobby::init_room()
 		}
 		auto room = boost::make_shared<logic_room>(&(it->second),this);
 		roomMap.insert(std::make_pair(it->second.mRoomID, room));
-	}*/
+	}
 }
 //游戏引擎初始化大厅入口
 void logic_lobby::init_game()
@@ -54,32 +54,29 @@ void logic_lobby::init_game()
 
 void logic_lobby::release_game()
 {
-	if(!m_init)return;
-
+	if (!m_init)
+	{
+		return;
+	}
 	for (auto it = playerMap.begin(); it != playerMap.end(); ++it)
 	{
 		it->second->release();
 	}
-	playerMap.clear();
 
+	playerMap.clear();
 	roomMap.clear();
 }
 
 void logic_lobby::heartbeat(double elapsed)
 {
-	/*if(!m_init)return;
-
+	if (!m_init)
+	{
+		return;
+	}
 	for (auto it = roomMap.begin(); it != roomMap.end(); ++it)
 	{
 		it->second->heartbeat(elapsed);
 	}
-	m_check_cache += elapsed;
-	if(m_check_cache > 60)
-	{
-		save_cache();
-		m_check_cache = 0;
-	}*/
-
 }
 
 bool logic_lobby::player_enter_game(iGPlayerPtr igplayer)
@@ -127,7 +124,6 @@ int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid
 
 		return 1;
 	}*/
-
 	return 2;
 }
 
@@ -136,15 +132,17 @@ int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid
 //pid:玩家ID,rid:房间ID
 int logic_lobby::enter_room(uint32_t pid, uint16_t rid)
 {
-	/*auto it = playerMap.find(pid);
-	if(it == playerMap.end())
-		return msg_type_def::e_rmt_fail;										//返回失败
+	auto it = playerMap.find(pid);
+	if (it == playerMap.end())
+	{
+		return msg_type_def::e_rmt_fail;
+	}
 
 	auto room = roomMap.find(rid);
 	if(room == roomMap.end())
 		return msg_type_def::e_rmt_fail;										//返回失败
 
-	return room->second->enter_room(it->second);*/
+	return room->second->enter_room(it->second);
 	return 0;
 }
 
@@ -170,27 +168,6 @@ LPlayerPtr& logic_lobby::get_player(uint32_t pid)
 		return it->second;
 	}
 	return logic_player::EmptyPtr;
-}
-
-void logic_lobby::resetToday()
-{
-	TempTodayOutlay = 0;
-	TempTodayIncome = 0;
-
-	for(int i = 0; i < 4; i++)
-	{
-		TempTodayIncomeArr[i] = TempTodayOutlayArr[i] = 0;
-	}
-}
-
-//缓存当日统计
-void logic_lobby::save_cache()
-{
-	if(TempTodayOutlay >0 ||TempTodayIncome>0)
-	{
-		auto now = time_helper::instance().get_cur_date();
-		time_t nt = time_helper::convert_from_date(now) * 1000;
-	}
 }
 
 //返回一个机器人 返回的机器人未进入房间？

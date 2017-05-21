@@ -5,48 +5,6 @@
 #include <enable_random.h>
 #include "Landlord_RoomCFG.h"
 
-//创建机器人
-void logic_room::create_robot()
-{
-	/*static int player_min = landlord_BaseCFG::GetSingleton()->GetData("PlayerMinCount")->mValue;
-	if (m_rob_count < robMinCount)
-	{
-		//--------------------there code is skill--------------------------
-		std::vector<int> tempProb;
-		int tempTotal = 0;
-		for (int k = 0; k < m_cfg->mCreateProb.size(); k++)
-		{
-			tempTotal += m_cfg->mCreateProb.at(k);
-			tempProb.push_back(tempTotal);
-		}
-		int tempInt = 1;
-		if (m_db_room_id->get_value() == 1)
-		{
-			tempInt = global_random::instance().rand_int(1,tempTotal);
-		}
-		else
-		{
-			int minInx=m_cfg->mCreateProb[0]-10>30?m_cfg->mCreateProb[0]:30;
-			tempInt = global_random::instance().rand_int(minInx,tempTotal);
-		}
-
-		int random_tag = 1;
-		for (int i = 0; i < tempProb.size(); i++)
-		{
-			if (tempInt <= tempProb[i])
-			{
-				random_tag = m_cfg->mRobTag.at(i);
-				break;
-			}
-		}
-		//----------------------------------------------------------------
-		int gold_min = landlord_RobCFG::GetSingleton()->GetData(random_tag)->mGoldMin;
-		int gold_max = landlord_RobCFG::GetSingleton()->GetData(random_tag)->mGoldMax;
-		int vip_min = landlord_RobCFG::GetSingleton()->GetData(random_tag)->mVipMin;
-		int vip_max = landlord_RobCFG::GetSingleton()->GetData(random_tag)->mVipMax;
-		game_engine::instance().request_robot(m_db_room_id->get_value(), global_random::instance().rand_int(gold_min,gold_max), global_random::instance().rand_int(vip_min,vip_max));
-	}*/
-}
 //机器人AI
 void logic_player::robot_heartbeat( double elapsed )
 {

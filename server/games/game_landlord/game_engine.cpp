@@ -15,9 +15,10 @@ game_engine::game_engine(void)
 
 game_engine::~game_engine(void)
 {
+
 }
 
-static const uint16_t GAME_ID = 14;
+static const uint16_t GAME_ID = 15;
 static const uint32_t GAME_VER = 1;
 
 //----------------------------------------------------------------------------------
@@ -60,10 +61,10 @@ void game_engine::heartbeat( double elapsed )
 void game_engine::exit_engine()
 {
 	m_lobby.release_game();
-	//SLOG_CRITICAL<<"½áÊøÒýÇæ"<<std::endl;
-	if(get_handler() != nullptr)
+	if (get_handler() != nullptr)
+	{
 		get_handler()->on_exit_engine();
-
+	}
 	com_log::flush();
 }
 
