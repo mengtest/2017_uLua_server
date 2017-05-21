@@ -1,10 +1,9 @@
 #pragma once
 #include "logic_def.h"
 #include "logic_core.h"
-#include "proc_game_happysupremacy_protocol.h"
+#include "proc_game_landlord_protocol.h"
 
-struct HappySupremacy_RoomCFGData;
-struct HappySupremacy_RoomStockCFGData;
+struct Landlord_RoomCFGData;
 class HistoryArray;
 
 class logic_room_db:public game_object
@@ -38,19 +37,18 @@ public:
 class logic_room :public logic_room_db
 {
 public:
-	logic_room(const HappySupremacy_RoomCFGData* cfg, logic_lobby* _lobby);
+	logic_room(const Landlord_RoomCFGData* cfg, logic_lobby* _lobby);
 	~logic_room(void);
 
 	void heartbeat( double elapsed );
 	uint16_t get_room_id();			//房间ID
-	e_game_state get_room_state(){return m_game_state;}
 	void set_is_have_bet(bool is_have);		//下注期间是否有押注
 
 	bool room_is_full();
 	uint16_t enter_room(LPlayerPtr player);		//进入房间
 	void leave_room(uint32_t playerid);			//离开房间
 
-	const HappySupremacy_RoomCFGData* get_room_cfg() const;
+	const Landlord_RoomCFGData* get_room_cfg() const;
 	logic_lobby* get_lobby(){return m_lobby;};
 
 	void adjust_earn_rate(); //发牌
@@ -83,19 +81,6 @@ public:
 
 	GOLD_TYPE get_total_bet_count(){return m_total_bet_count;}
 	double getRobEarnRate(){return m_rob_earn_rate;} //机器人赢得概率
-	//gm相关
-	void set_gm(int count);
-	int get_gm_result();//后台设置下局结果
-
-	void set_GM_CONTROL_COMMAND(int command){GM_CONTROL_COMMAND=command;}
-	void set_GM_CONTROL_COMMAND_LIST(const std::vector<e_bet_type>& list)
-	{
-		GM_CONTROL_COMMAND_LIST=list;
-	}
-
-	void set_Stock(GOLD_TYPE Income,GOLD_TYPE outcome);//设置库存//设置库存
-	void get_pre_Stock_Income(GOLD_TYPE* income,GOLD_TYPE* outcome);
-	void set_player_Stock_bet_count();
 public:
 	template<class T>
 	int broadcast_msg_to_client(T msg, uint32_t except_id = 0)
@@ -104,18 +89,12 @@ public:
 	};
 	int broadcast_msg_to_client(uint16_t packet_id, boost::shared_ptr<google::protobuf::Message> msg, uint32_t except_id);
 
-	boost::shared_ptr<game_happysupremacy_protocols::packetl2c_get_room_scene_info_result> get_room_scene_info();		//获得场景协议
-	boost::shared_ptr<game_happysupremacy_protocols::packetl2c_ask_for_player_list_result> get_room_player_list();	//获得玩家列表协议
-	boost::shared_ptr<game_happysupremacy_protocols::packetl2c_ask_for_banker_list_result> get_room_banker_list();	//获得庄家列表协议
-	boost::shared_ptr<game_happysupremacy_protocols::packetl2c_ask_for_history_list_result> get_room_history_list();	//获得庄家列表协议
 private:
-	const HappySupremacy_RoomCFGData* m_cfg;
-	const HappySupremacy_RoomStockCFGData* m_StockCFG;
+	const Landlord_RoomCFGData* m_cfg;
 	logic_lobby* m_lobby;
 	LPLAYER_MAP playerMap;		//所有玩家字典
 	logic_core* m_core_engine;	//发牌器
 
-	e_game_state m_game_state;
 	double m_cd_time;
 	bool is_have_bet;
 	double m_elapse;
@@ -128,10 +107,6 @@ private:
 	int m_no_banker_count;			//无庄连续局数
 
 	GOLD_TYPE m_total_bet_count; //房间总下注数量
-	std::map<e_bet_type,GOLD_TYPE> m_room_bet_list;//各个类型的下注数量
-	std::map<e_bet_type,GOLD_TYPE> m_room_player_bet_list;//机器人下注数量
-
-	std::list<history_info> m_history_list;	//记录下注结果的历史记录
 	bool is_refresh_history;				//是否刷新牌路
 
 	GOLD_TYPE m_once_income;			//单局收到总押注
@@ -156,12 +131,6 @@ private:
 	GOLD_TYPE m_rob_banker_cost;			//当前抢庄花费
 	bool is_have_rob_banker;				//是否需要广播抢庄信息
 
-	bool is_gm;
-	int32_t gm_index;
-	int32_t gm_max;
-
-	int GM_CONTROL_COMMAND;//是否控制客户端发来请求1:收分，2:放分,3:全输
-	std::vector<e_bet_type> GM_CONTROL_COMMAND_LIST;//7（全输）
 private:
 	int IsOpenRob;
 	int IsOpenGM;

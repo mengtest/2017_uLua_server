@@ -1,19 +1,10 @@
 #include "stdafx.h"
 #include "logic_lobby.h"
-#include "logic_room.h"
 #include "logic_player.h"
 #include <i_game_player.h>
 #include "time_helper.h"
 #include "game_db_log.h"
-#include "proc_game_happysupremacy_protocol.h"
 #include "msg_type_def.pb.h"
-#include "HappySupremacy_RoomCFG.h"
-#include "HappySupremacy_BaseCFG.h"
-#include "HappySupremacy_BetMaxCFG.h"
-#include "HappySupremacy_RobAICFG.h"
-#include "HappySupremacy_RobCFG.h"
-#include "HappySupremacy_RoomStockCFG.h"
-#include "HappySupremacy_RateCFG.h"
 
 logic_lobby::logic_lobby(void)
 :m_init(false)
@@ -29,22 +20,16 @@ logic_lobby::~logic_lobby(void)
 
 void logic_lobby::init_config()
 {
-	HappySupremacy_RoomCFG::GetSingleton()->Load();
-	HappySupremacy_BaseCFG::GetSingleton()->Load();
-	HappySupremacy_BetMaxCFG::GetSingleton()->Load();
-	HappySupremacy_RobAICFG::GetSingleton()->Load();
-	HappySupremacy_RobCFG::GetSingleton()->Load();
-	HappySupremacy_RoomStockCFG::GetSingleton()->Load();
-	HappySupremacy_RateCFG::GetSingleton()->Load();
+	//landlord_RoomCFG::GetSingleton()->Load();
 }
 void logic_lobby::init_protocol()
 {
-	init_proc_happysupremacy_protocol();
+	//init_proc_landlord_protocol();
 }
 
 void logic_lobby::init_room()
 {
-	const boost::unordered_map<int, HappySupremacy_RoomCFGData>& list = HappySupremacy_RoomCFG::GetSingleton()->GetMapData();
+	/*const boost::unordered_map<int, landlord_RoomCFGData>& list = landlord_RoomCFG::GetSingleton()->GetMapData();
 	for (auto it = list.begin(); it != list.end(); ++it)
 	{
 		if(!it->second.mIsOpen)
@@ -53,7 +38,7 @@ void logic_lobby::init_room()
 		}
 		auto room = boost::make_shared<logic_room>(&(it->second),this);
 		roomMap.insert(std::make_pair(it->second.mRoomID, room));
-	}
+	}*/
 }
 //游戏引擎初始化大厅入口
 void logic_lobby::init_game()
@@ -82,7 +67,7 @@ void logic_lobby::release_game()
 
 void logic_lobby::heartbeat(double elapsed)
 {
-	if(!m_init)return;
+	/*if(!m_init)return;
 
 	for (auto it = roomMap.begin(); it != roomMap.end(); ++it)
 	{
@@ -93,7 +78,7 @@ void logic_lobby::heartbeat(double elapsed)
 	{
 		save_cache();
 		m_check_cache = 0;
-	}
+	}*/
 
 }
 
@@ -130,7 +115,7 @@ void logic_lobby::player_leave_game(uint32_t playerid)
 
 int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid)
 {
-	if(player_enter_game(igplayer))
+	/*if(player_enter_game(igplayer))
 	{
 		auto it = playerMap.find(friendid);
 		if(it == playerMap.end())
@@ -141,7 +126,7 @@ int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid
 			return enter_room(igplayer->get_playerid(),room->get_room_id());
 
 		return 1;
-	}
+	}*/
 
 	return 2;
 }
@@ -151,7 +136,7 @@ int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid
 //pid:玩家ID,rid:房间ID
 int logic_lobby::enter_room(uint32_t pid, uint16_t rid)
 {
-	auto it = playerMap.find(pid);
+	/*auto it = playerMap.find(pid);
 	if(it == playerMap.end())
 		return msg_type_def::e_rmt_fail;										//返回失败
 
@@ -159,7 +144,8 @@ int logic_lobby::enter_room(uint32_t pid, uint16_t rid)
 	if(room == roomMap.end())
 		return msg_type_def::e_rmt_fail;										//返回失败
 
-	return room->second->enter_room(it->second);
+	return room->second->enter_room(it->second);*/
+	return 0;
 }
 
 void logic_lobby::leave_room(uint32_t pid)
@@ -204,17 +190,6 @@ void logic_lobby::save_cache()
 	{
 		auto now = time_helper::instance().get_cur_date();
 		time_t nt = time_helper::convert_from_date(now) * 1000;
-
-		db_log::instance().push_update(2, BSON("Date"<<mongo::Date_t(nt)), 
-			BSON("$inc"<<BSON("TodayOutlay"<<TempTodayOutlay << "TodayIncome" << TempTodayIncome
-			<< "room1Income" << getTodayIncome(1) << "room1Outlay" << getTodayOutlay(1)  
-			<< "room2Income" << getTodayIncome(2) << "room2Outlay" << getTodayOutlay(2)
-			<< "room3Income" << getTodayIncome(3) << "room3Outlay" << getTodayOutlay(3)
-			<< "room4Income" << getTodayIncome(4) << "room4Outlay" << getTodayOutlay(4)
-
-			)));
-
-		resetToday();
 	}
 }
 

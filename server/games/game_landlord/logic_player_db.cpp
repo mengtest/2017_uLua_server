@@ -9,14 +9,11 @@
 #include "game_db_log.h"
 #include <enable_random.h>
 #include <time_helper.h>
-#include "HappySupremacy_RoomCFG.h"
-#include "HappySupremacy_BaseCFG.h"
-#include "HappySupremacy_BetMaxCFG.h"
-#include "HappySupremacy_RobAICFG.h"
+#include "Landlord_RoomCFG.h"
 
 bool logic_player_db::load_player()
 {
-	mongo::BSONObj b = db_game::instance().findone(DB_HAPPYSUPREMACY_PLAYER, BSON("player_id" << m_player_id->get_value()));
+	mongo::BSONObj b = db_game::instance().findone(DB_LANDLORD_PLAYER, BSON("player_id" << m_player_id->get_value()));
 	if(b.isEmpty())
 		return false;
 
@@ -35,7 +32,7 @@ bool logic_player_db::store_game_object(bool to_all)
 	if(!has_update())
 		return true;
 	
-	auto err = db_game::instance().update(DB_HAPPYSUPREMACY_PLAYER, BSON("player_id" << m_player_id->get_value()), BSON("$set"<<to_bson(to_all)));
+	auto err = db_game::instance().update(DB_LANDLORD_PLAYER, BSON("player_id" << m_player_id->get_value()), BSON("$set"<<to_bson(to_all)));
 	if(!err.empty())
 	{
 		SLOG_ERROR << "logic_player::store_game_object :" <<err;

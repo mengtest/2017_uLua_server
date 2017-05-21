@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #include "logic_room.h"
-#include "HappySupremacy_RoomCFG.h"
-#include "HappySupremacy_BaseCFG.h"
-#include "HappySupremacy_RobCFG.h"
-#include "HappySupremacy_RoomStockCFG.h"
-#include "HappySupremacy_RateCFG.h"
+#include "Landlord_RoomCFG.h"
+
 #include "logic_player.h"
 #include "game_db.h"
 #include "game_engine.h"
@@ -24,18 +21,13 @@ void logic_room_db::create_room()
 	m_db_rob_income->set_value(0);
 	m_db_rob_outcome->set_value(0);
 
-	GOLD_TYPE defaultStock=HappySupremacy_RoomStockCFG::GetSingleton()->GetData(m_db_room_id->get_value())->mDefaultStock;
-	TotalStock->set_value(defaultStock);
-
-	double earnRate=HappySupremacy_RoomStockCFG::GetSingleton()->GetData(m_db_room_id->get_value())->mDeduct;
-	EarningsRate->set_value(earnRate);
 	TotalProfit->set_value(0);
 }
 
 //房间数据是要保存到数据库的
 bool logic_room_db::load_room()
 {
-	mongo::BSONObj b = db_game::instance().findone(DB_HAPPYSUPREMACY_ROOM, BSON("room_id"<<m_db_room_id->get_value()));
+	mongo::BSONObj b = db_game::instance().findone(DB_LANDLORD_ROOM, BSON("room_id"<<m_db_room_id->get_value()));
 	//如果刚开始数据里没有这个数据
 	if(b.isEmpty())
 		return false;	
@@ -46,7 +38,7 @@ void logic_room_db::reflush_rate()
 {
 	static mongo::BSONObj ff = BSON("ExpectEarnRate"<<1<<"room_income"<<1<<"room_outcome"<<1);
 	//std::cout<<"Monogo："<<ff.toString()<<std::endl;
-	mongo::BSONObj b = db_game::instance().findone(DB_HAPPYSUPREMACY_ROOM, BSON("room_id"<<m_db_room_id->get_value()), &ff);
+	mongo::BSONObj b = db_game::instance().findone(DB_LANDLORD_ROOM, BSON("room_id"<<m_db_room_id->get_value()), &ff);
 	if(!b.isEmpty() && b.hasField("ExpectEarnRate"))
 	{
 		m_db_ExpectEarnRate->set_value(b.getField("ExpectEarnRate").Double(), false);
@@ -87,7 +79,7 @@ bool logic_room_db::store_game_object(bool to_all)
 	if(!has_update())
 		return true;
 
-	auto err = db_game::instance().update(DB_HAPPYSUPREMACY_ROOM, BSON("room_id"<<m_db_room_id->get_value()), BSON("$set"<<to_bson(to_all)));
+	auto err = db_game::instance().update(DB_LANDLORD_ROOM, BSON("room_id"<<m_db_room_id->get_value()), BSON("$set"<<to_bson(to_all)));
 	if(!err.empty())
 	{
 		SLOG_ERROR << "logic_room::store_game_object :" <<err;

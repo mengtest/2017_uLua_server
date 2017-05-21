@@ -113,7 +113,6 @@ void game_engine::response_robot(int32_t playerid, int tag)
 }
 //--------------------------------------------------------------------------------------------
 
-
 //请求一个机器人
 void game_engine::request_robot(int tag, int needgold, int needvip)
 {

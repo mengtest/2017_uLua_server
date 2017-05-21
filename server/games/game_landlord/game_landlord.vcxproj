@@ -119,7 +119,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\..\..\share\dependencies\lib\x64;$(OutDir)\..\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\share\dependencies\lib\x64;$(OutDir)\..\servers;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
@@ -136,13 +136,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\share\protocol\game_happysupremacy_def.pb.cc">
+    <ClCompile Include="..\..\..\share\protocol\game_landlord_def.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\share\protocol\game_happysupremacy_protocol.pb.cc">
+    <ClCompile Include="..\..\..\share\protocol\game_landlord_protocol.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\share\protocol\msg_type_def.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -152,14 +150,7 @@
     <ClCompile Include="game_db_log.cpp" />
     <ClCompile Include="game_engine.cpp" />
     <ClCompile Include="game_landlord.cpp" />
-    <ClCompile Include="HappySupremacy_BaseCFG.cpp" />
-    <ClCompile Include="HappySupremacy_BetMaxCFG.cpp" />
-    <ClCompile Include="HappySupremacy_MultiLanguageCFG.cpp" />
-    <ClCompile Include="HappySupremacy_RateCFG.cpp" />
-    <ClCompile Include="HappySupremacy_RobAICFG.cpp" />
-    <ClCompile Include="HappySupremacy_RobCFG.cpp" />
-    <ClCompile Include="HappySupremacy_RoomCFG.cpp" />
-    <ClCompile Include="HappySupremacy_RoomStockCFG.cpp" />
+    <ClCompile Include="Landlord_RoomCFG.cpp" />
     <ClCompile Include="logic_core.cpp" />
     <ClCompile Include="logic_lobby.cpp" />
     <ClCompile Include="logic_player.cpp" />
@@ -174,21 +165,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\share\protocol\game_happysupremacy_def.pb.h" />
-    <ClInclude Include="..\..\..\share\protocol\game_happysupremacy_protocol.pb.h" />
+    <ClInclude Include="..\..\..\share\protocol\game_landlord_def.pb.h" />
+    <ClInclude Include="..\..\..\share\protocol\game_landlord_protocol.pb.h" />
     <ClInclude Include="..\..\..\share\protocol\msg_type_def.pb.h" />
     <ClInclude Include="game_db.h" />
     <ClInclude Include="game_db_log.h" />
     <ClInclude Include="game_engine.h" />
     <ClInclude Include="game_landlord.h" />
-    <ClInclude Include="HappySupremacy_BaseCFG.h" />
-    <ClInclude Include="HappySupremacy_BetMaxCFG.h" />
-    <ClInclude Include="HappySupremacy_MultiLanguageCFG.h" />
-    <ClInclude Include="HappySupremacy_RateCFG.h" />
-    <ClInclude Include="HappySupremacy_RobAICFG.h" />
-    <ClInclude Include="HappySupremacy_RobCFG.h" />
-    <ClInclude Include="HappySupremacy_RoomCFG.h" />
-    <ClInclude Include="HappySupremacy_RoomStockCFG.h" />
+    <ClInclude Include="Landlord_RoomCFG.h" />
     <ClInclude Include="logic_core.h" />
     <ClInclude Include="logic_def.h" />
     <ClInclude Include="logic_lobby.h" />
@@ -197,11 +181,6 @@
     <ClInclude Include="proc_game_landlord_protocol.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\share\protocol\game_happysupremacy_def.proto" />
-    <None Include="..\..\..\share\protocol\game_happysupremacy_protocol.proto" />
-    <None Include="..\..\..\share\protocol\msg_type_def.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
