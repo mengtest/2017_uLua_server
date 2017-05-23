@@ -106,24 +106,12 @@ void logic_lobby::player_leave_game(uint32_t playerid)
 	if(it == playerMap.end())
 		return;
 
-	it->second->leave_room();
+	it->second->leave_table();
 	playerMap.erase(it);
 }
 
 int logic_lobby::player_join_friend_game(iGPlayerPtr igplayer, uint32_t friendid)
 {
-	/*if(player_enter_game(igplayer))
-	{
-		auto it = playerMap.find(friendid);
-		if(it == playerMap.end())
-			return 2;
-
-		auto room = it->second->get_room();
-		if(room != nullptr)
-			return enter_room(igplayer->get_playerid(),room->get_room_id());
-
-		return 1;
-	}*/
 	return 2;
 }
 
@@ -135,12 +123,12 @@ int logic_lobby::enter_room(uint32_t pid, uint16_t rid)
 	auto it = playerMap.find(pid);
 	if (it == playerMap.end())
 	{
-		return msg_type_def::e_rmt_fail;
+		return e_error_code_failed;
 	}
 
 	auto room = roomMap.find(rid);
 	if(room == roomMap.end())
-		return msg_type_def::e_rmt_fail;										//·µ»ØÊ§°Ü
+		return e_error_code_failed;;										//·µ»ØÊ§°Ü
 
 	return room->second->enter_room(it->second);
 	return 0;
@@ -152,7 +140,7 @@ void logic_lobby::leave_room(uint32_t pid)
 	if(it == playerMap.end())
 		return;
 
-	it->second->leave_room();
+	it->second->leave_table();
 }
 
 const LROOM_MAP& logic_lobby::get_rooms() const

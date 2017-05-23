@@ -154,10 +154,7 @@
     <ClCompile Include="logic_core.cpp" />
     <ClCompile Include="logic_lobby.cpp" />
     <ClCompile Include="logic_player.cpp" />
-    <ClCompile Include="logic_player_db.cpp" />
-    <ClCompile Include="logic_player_robot.cpp" />
     <ClCompile Include="logic_room.cpp" />
-    <ClCompile Include="logic_room_db.cpp" />
     <ClCompile Include="logic_table.cpp" />
     <ClCompile Include="proc_game_landlord_protocol.cpp" />
     <ClCompile Include="stdafx.cpp">

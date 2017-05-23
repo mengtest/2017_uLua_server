@@ -30,19 +30,10 @@
     <ClCompile Include="logic_player.cpp">
       <Filter>game_logic</Filter>
     </ClCompile>
-    <ClCompile Include="logic_player_db.cpp">
-      <Filter>game_logic</Filter>
-    </ClCompile>
-    <ClCompile Include="logic_player_robot.cpp">
-      <Filter>game_logic</Filter>
-    </ClCompile>
     <ClCompile Include="logic_core.cpp">
       <Filter>game_logic</Filter>
     </ClCompile>
     <ClCompile Include="logic_room.cpp">
-      <Filter>game_logic</Filter>
-    </ClCompile>
-    <ClCompile Include="logic_room_db.cpp">
       <Filter>game_logic</Filter>
     </ClCompile>
     <ClCompile Include="Landlord_RoomCFG.cpp">

@@ -2,6 +2,7 @@
 #include "logic_def.h"
 #include "logic_core.h"
 #include "proc_game_landlord_protocol.h"
+#include "logic_table.h"
 
 struct Landlord_RoomCFGData;
 class logic_room_db:public game_object
@@ -26,8 +27,10 @@ public:
 	void heartbeat( double elapsed );
 	uint16_t get_room_id();			//房间ID
 
-	uint16_t enter_room(LPlayerPtr player);		//进入房间
-	void leave_room(uint32_t playerid);			//离开房间
+	e_server_error_code enter_room(LPlayerPtr player);		//进入房间
+	e_server_error_code leave_room(uint32_t playerid);			//离开房间
+
+    e_server_error_code enter_table(LPlayerPtr player);
 
 	const Landlord_RoomCFGData* get_room_cfg() const;
 	logic_lobby* get_lobby(){return m_lobby;};
@@ -42,4 +45,7 @@ private:
 	const Landlord_RoomCFGData* m_cfg;
 	logic_lobby* m_lobby;
 	LPLAYER_MAP playerMap;		//所有玩家字典
+	LTABLE_MAP tableMap;		//所有玩家字典
+	int robCount;
+	double createRob_time;
 };

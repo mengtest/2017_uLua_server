@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<Data RoomID="1" RoomName="人机对战" IsOpen="true" RoomImage="B_RoomItem_1" VipCondition="0" GoldCondition="1000" />
+	<Data RoomID="2" RoomName="自由匹配" IsOpen="true" RoomImage="B_RoomItem_2" VipCondition="0" GoldCondition="100000" />
+	<Data RoomID="3" RoomName="排位赛" IsOpen="true" RoomImage="B_RoomItem_2" VipCondition="0" GoldCondition="100000" />
+</Root>

@@ -13,7 +13,6 @@
 #include "logic_room.h"
 #include "logic_table.h"
 
-#include "fish_logic.pb.h"
 #include "msg_type_def.pb.h"
 #include "pump_type.pb.h"
 #include "ShowHand_RoomCFG.h"

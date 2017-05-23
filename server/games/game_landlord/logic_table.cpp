@@ -11,29 +11,61 @@
 
 using namespace std;
 
-static const int BANKER_MAX_COUNT = 10;	//申请上庄列表最大数量
-static const int SYNC_BET_TIME = 1;		//几秒同步一次押注
-
-logic_table::logic_table(int tableId)
+logic_table::logic_table(logic_room* room, int tableId):current_deskId(1)
 {
+	deskCount = 3;
+	m_room = room;
+	gameState = e_game_state::e_game_state_none;
 	m_tableId = tableId;
 	logic_table_db::init_game_object();
-	logic_table_db::m_db_table_id->set_value(tableId);
+	logic_table_db::m_db_table_id->set_value(m_tableId);
 	if (!load_table())
 	{
 		create_table();
 	}
+	m_cardManager=new logic_core(deskCount);
 }
 
 logic_table::~logic_table(void)
 {
-
+	if (m_cardManager != nullptr)
+	{
+		delete m_cardManager;
+		m_cardManager = nullptr;
+	}
 }
 
 void logic_table::heartbeat(double elapsed)
 {
+	if (gameState == e_game_state::e_game_state_none)
+	{
+		return;
+	}
 
+	if (gameState == e_game_state::e_game_state_matching)//匹配
+	{
+		if (playerMap.size() >= deskCount)
+		{
+			gameState = e_game_state::e_game_state_startgame;
+		}	
+	}
+	else if (gameState == e_game_state::e_game_state_startgame)//开始游戏，发完所有牌
+	{
+		do_protobuf_notice_start_game();
 
+	}
+	else if (gameState == e_game_state::e_game_state_robLandlore)//叫地主
+	{
+		
+	}
+	else if (gameState == e_game_state::e_game_state_playhand)//玩家出牌
+	{
+
+	}
+	else if (gameState == e_game_state::e_game_state_award)//开奖
+	{
+
+	}
 }
 
 uint16_t logic_table::get_table_id()
@@ -41,35 +73,56 @@ uint16_t logic_table::get_table_id()
 	return m_tableId;
 }
 
-uint16_t logic_table::enter_table(LPlayerPtr player)
+e_server_error_code logic_table::enter_table(LPlayerPtr player)
 {
-	/*if (playerMap.find(player->get_pid()) != playerMap.end())
-		return msg_type_def::e_rmt_fail;
-
-	if (playerMap.size() >= 10000)		//房间已满
-		return msg_type_def::e_rmt_room_full;
-
-	if (!player->enter_room(this))
-		return msg_type_def::e_rmt_fail;
-
-	playerMap.insert(std::make_pair(player->get_pid(), player));*/
-
-	return msg_type_def::e_rmt_success;
-}
-
-void logic_table::leave_table(uint32_t playerid)
-{
-	auto it = playerMap.find(playerid);
-	if (it == playerMap.end())
+	if (playerMap.size() >= 3)
 	{
-		return;
+		return e_error_code_failed;
+	}
+	auto it = playerMap.find(player->get_pid());
+	if (it != playerMap.end())
+	{
+		return e_error_code_success;
 	}
 
-	playerMap.erase(it);
+	playerMap.insert(make_pair(player->get_pid(),player));
+	player->set_deskId(current_deskId);
+	current_deskId++;
+	return e_error_code_success;
 }
+
+e_server_error_code logic_table::leave_table(uint32_t playerId)
+{
+	auto it = playerMap.find(playerId);
+	if (it == playerMap.end())
+	{
+		return e_error_code_success;
+	}
+	m_room->leave_room(playerId);
+	playerMap.erase(it);
+
+	return e_error_code_success;
+}
+
+TableState logic_table::get_table_state()
+{
+	return TableState_None;
+}
+
+void logic_table::do_protobuf_notice_start_game()
+{
+	auto sendmsg = PACKET_CREATE(packetl2c_notice_start_game, e_mst_l2c_enter_room);
+
+	broadcast_msg_to_client(sendmsg);
+	
+}
+
+
+
 
 void logic_table_db::create_table()
 {
+
 
 }
 

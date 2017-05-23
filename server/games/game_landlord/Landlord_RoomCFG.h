@@ -9,18 +9,12 @@ struct Landlord_RoomCFGData
 	std::string mRoomName;
 	//是否开放
 	bool mIsOpen;
-	//机器人标签
-	std::vector<int> mRobTag;
 	//房间图片
 	std::string mRoomImage;
 	//进场VIP条件
 	int mVipCondition;
 	//进场金币条件
 	int mGoldCondition;
-	//最大下注额
-	int mBetMax;
-	//机器人数量
-	int mRobCount;
 };
 
 class Landlord_RoomCFG

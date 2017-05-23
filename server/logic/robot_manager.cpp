@@ -25,16 +25,6 @@ robot_manager::~robot_manager()
 //请求机器人  返回-1为需要向world请求新机器人
 int robot_manager::request_robot(int tag, GOLD_TYPE needgold, int needvip)
 {
-	//for (auto it = m_idlelist.begin(); it != m_idlelist.end(); ++it)
-	//{
-	//	idle_robot& ir = it->second;
-	//	if(ir.vip>= needvip && ir.gold>=needgold)
-	//	{
-	//		int playerid = ir.playerid;
-	//		m_idlelist.erase(it);
-	//		return playerid;
-	//	}
-	//}
 	if(game_player_mgr::instance().is_closing())
 		return -2;//关闭中不能申请机器人
 

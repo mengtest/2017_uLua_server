@@ -5,7 +5,6 @@
 #include <enable_crypto.h>
 #include <enable_json_map.h>
 #include <enable_random.h>
-//#include "game_db.h"
 #include "game_player_mgr.h"
 #include <boost/regex.hpp>
 #include "time_helper.h"
@@ -52,6 +51,7 @@ game_player::game_player()
 
 game_player::~game_player()
 {
+
 }
 
 void game_player::heartbeat( double elapsed )

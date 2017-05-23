@@ -78,11 +78,8 @@ bool RobotsSys::sys_load()
 			idle_robot ir;
 			ir.playerid = obj.getIntField("player_id");
 			ir.vip = obj.getIntField("VipLevel");
-			//ir.gold = obj.getField("gold").Long();
 			m_robots.push_back(ir);
 		}
-
-		//std::sort(m_robots.begin(), m_robots.end(), sort_robot);
 	}
 	return true;
 }
@@ -98,32 +95,16 @@ GPlayerPtr RobotsSys::request_robot(GOLD_TYPE needgold, int needvip)
 		m_robots.erase(it);
 	}
 
-	//if(playerid <=0 && m_robots.size()>0)
-	//{
-	//	auto fit = m_robots.front();
-	//	playerid = fit.playerid;
-	//	m_robots.pop_front();
-	//}
-
 	auto p = game_player::malloc();
 	p->load_robot(playerid);
 
-	//这里做改名，升级VIP，增加金币等操作
-	//static int maxgold = M_BaseInfoCFG::GetSingleton()->GetData("MaxGold")->mValue;
-	//if(p->Gold->get_value()<needgold || maxgold < p->Gold->get_value())
-	//{
-		p->Gold->set_value(needgold);//金币
-	//}
+	p->Gold->set_value(needgold);//金币
 
 	if(p->get_viplvl() < needvip)
 	{
 		auto vipmgr = p->get_sys<game_sys_recharge>();
 		vipmgr->VipLevel->set_value(needvip);//vip
 	}
-	
-
-
-	//p->store_game_object();
 
 	m_robotcount++;
 

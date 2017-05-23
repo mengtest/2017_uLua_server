@@ -58,7 +58,7 @@ void logic_lobby::init_room()
 //游戏引擎初始化大厅入口
 void logic_lobby::init_game()
 {
-	m_max_player = 20000;
+	m_max_player = 10000;
 
 	init_protocol();
 	init_config();

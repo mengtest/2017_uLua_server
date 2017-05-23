@@ -12,12 +12,13 @@
 #include "Landlord_RoomCFG.h"
 
 logic_player::logic_player(void)
-:m_lobby(nullptr)
-,m_room(nullptr)
-,m_logic_gold(0)
-,m_change_gold(0)
-,m_checksave(0.0)
-,is_first_save(true)
+	:m_lobby(nullptr)
+	, m_room(nullptr)
+	, m_logic_gold(0)
+	, m_change_gold(0)
+	, m_checksave(0.0)
+	, is_first_save(true)
+	,deskId(0)
 {
 	logic_player_db::init_game_object();
 }
@@ -25,6 +26,7 @@ logic_player::logic_player(void)
 
 logic_player::~logic_player(void)
 {
+
 
 }
 
@@ -40,7 +42,7 @@ void logic_player::on_attribute_change(int atype, int v)
 
 void logic_player::on_change_state()	//通知游戏状态改变，是否断线
 {
-	//leave_room();
+	
 }
 
 void logic_player::on_attribute64_change(int atype, GOLD_TYPE v)
@@ -62,35 +64,27 @@ void logic_player::heartbeat( double elapsed )
 			is_first_save = false;
 		}
 		else
+		{
 			logic_player_db::store_game_object();
+		}
 		m_checksave = 0.0;
 	}
 
 	if (m_room == nullptr)
 		return;
 
-	robot_heartbeat(elapsed);
-}
+	if (is_robot())//机器人AI
+	{
+		if (m_room == nullptr)
+		{
 
-void logic_player::enter_game(logic_lobby* lobby)
-{
-	m_lobby = lobby;
-	m_player_id->set_value(get_pid());
-	logic_player_db::load_player();
+		}
 
-	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);//m_player->get_attribute(msg_type_def::e_itd_gold);
+		if (m_table == nullptr)
+		{
 
-}
-
-bool logic_player::enter_room(logic_room* room)
-{
-	if(m_room != nullptr && room == nullptr)
-		return false;
-
-	m_room = room;
-	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);
-
-	return true;
+		}
+	}
 }
 
 uint32_t logic_player::get_pid()
@@ -127,12 +121,6 @@ void logic_player::sycn_gold()
 		m_change_gold = 0;
 	}
 }
-
-bool logic_player::is_GM_CONTROL()
-{
-	return m_player->get_attribute(msg_type_def::e_itd_privilege)> 0;
-}
-
 
 bool logic_player::is_robot()
 {
@@ -193,18 +181,52 @@ void logic_player::onAcceptGift(int receiverId, int giftId)
 	}
 }
 
-void logic_player::leave_room()
+void logic_player::quest_change(int quest_type, int count, int param)
 {
-	/*if(m_room != nullptr)
+	if (is_robot())
+		return;
+
+	m_player->quest_change(quest_type, count, param);
+}
+
+void logic_player::release()
+{
+	leave_table();
+	m_player.reset();
+}
+
+e_player_state logic_player::get_game_state()
+{
+	return m_player->get_state();
+}
+
+void logic_player::enter_game(logic_lobby* lobby)
+{
+	m_lobby = lobby;
+	m_player_id->set_value(get_pid());
+	logic_player_db::load_player();
+
+	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);
+}
+
+bool logic_player::enter_room(logic_room* room)
+{
+	if (m_room != nullptr || room == nullptr)
+		return false;
+
+	m_room = room;
+	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);
+
+	return true;
+}
+
+void logic_player::leave_table()
+{
+	if (m_table != nullptr)
 	{
-		if (m_room->get_room_state() == e_game_state::e_state_game_bet)
-		{
-			m_room->set_is_have_bet(true);
-		}		
-		m_room->leave_room(get_pid());
-		m_room = nullptr;
-	}	
-	clear_table_data();
+		m_table->leave_table(get_pid());
+		m_table = nullptr;
+	}
 
 	sycn_gold();
 
@@ -216,34 +238,37 @@ void logic_player::leave_room()
 	else
 	{
 		logic_player_db::store_game_object();
-	}*/
+	}
 }
 
-void logic_player::escapeHandle()
+bool logic_player_db::load_player()
 {
+	mongo::BSONObj b = db_game::instance().findone(DB_LANDLORD_PLAYER, BSON("player_id" << m_player_id->get_value()));
+	if (b.isEmpty())
+		return false;
 
-
+	return from_bson(b);
 }
 
-e_player_state logic_player::get_game_state()
+void logic_player_db::init_game_object()
 {
-	return m_player->get_state();
+	m_player_id = CONVERT_POINT(Tfield<int32_t>, regedit_tfield(e_got_int32, "player_id"));
 }
 
-void logic_player::release()
+//to_all：表示是否插入
+bool logic_player_db::store_game_object(bool to_all)
 {
-	leave_room();
-	m_player.reset();
+	if (!has_update())
+		return true;
+
+	auto err = db_game::instance().update(DB_LANDLORD_PLAYER, BSON("player_id" << m_player_id->get_value()), BSON("$set" << to_bson(to_all)));
+	if (!err.empty())
+	{
+		SLOG_ERROR << "logic_player::store_game_object :" << err;
+		return false;
+	}
+	return true;
 }
-
-void logic_player::quest_change(int quest_type,int count,int param)
-{
-	if (is_robot())
-		return;
-
-	m_player->quest_change(quest_type,count,param);
-}
-
 
 
 

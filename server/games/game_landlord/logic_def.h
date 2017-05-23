@@ -13,12 +13,15 @@
 class logic_room;
 class logic_player;
 class logic_lobby;
+class logic_table;
 
 typedef boost::shared_ptr<logic_room> LRoomPtr;
 typedef boost::shared_ptr<logic_player> LPlayerPtr;
+typedef boost::shared_ptr<logic_table> LTablePtr;
 
 typedef std::map<uint16_t, LRoomPtr> LROOM_MAP;
 typedef std::map<uint32_t, LPlayerPtr> LPLAYER_MAP;
+typedef std::map<uint32_t, LTablePtr> LTABLE_MAP;
 
 #define SAFE_DELETE(v) if(v != nullptr){delete v; v = nullptr;}
 

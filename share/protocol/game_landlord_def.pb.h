@@ -38,10 +38,12 @@ enum e_server_msg_type {
   e_mst_c2l_enter_room = 10001,
   e_mst_c2l_get_room_scene_info = 10002,
   e_mst_c2l_check_state = 10003,
+  e_mst_c2l_leave_room = 10004,
   e_mst_start_l2c = 15000,
   e_mst_l2c_enter_room = 15001,
   e_mst_l2c_get_room_scene_info = 15002,
   e_mst_l2c_check_state = 15003,
+  e_mst_l2c_leave_room = 15004,
   e_mst_l2c_start_game = 15101,
   e_mst_clend_index = 20000
 };
@@ -80,6 +82,29 @@ inline bool e_server_error_code_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<e_server_error_code>(
     e_server_error_code_descriptor(), name, value);
 }
+enum e_game_state {
+  e_game_state_none = 0,
+  e_game_state_matching = 1,
+  e_game_state_startgame = 2,
+  e_game_state_robLandlore = 3,
+  e_game_state_playhand = 4,
+  e_game_state_award = 5
+};
+bool e_game_state_IsValid(int value);
+const e_game_state e_game_state_MIN = e_game_state_none;
+const e_game_state e_game_state_MAX = e_game_state_award;
+const int e_game_state_ARRAYSIZE = e_game_state_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* e_game_state_descriptor();
+inline const ::std::string& e_game_state_Name(e_game_state value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    e_game_state_descriptor(), value);
+}
+inline bool e_game_state_Parse(
+    const ::std::string& name, e_game_state* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<e_game_state>(
+    e_game_state_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -106,6 +131,11 @@ template <> struct is_proto_enum< ::game_landlord_protocol::e_server_error_code>
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::game_landlord_protocol::e_server_error_code>() {
   return ::game_landlord_protocol::e_server_error_code_descriptor();
+}
+template <> struct is_proto_enum< ::game_landlord_protocol::e_game_state> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::game_landlord_protocol::e_game_state>() {
+  return ::game_landlord_protocol::e_game_state_descriptor();
 }
 
 }  // namespace google

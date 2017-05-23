@@ -108,7 +108,7 @@ void game_engine::init_db(enable_xml_config& xml_cfg)
 //返回一个机器人 返回的机器人未进入房间？
 void game_engine::response_robot(int32_t playerid, int tag)
 {
-	//std::cout<<"返回一个机器人：PID:"<<playerid<<"TAG:"<<tag<<std::endl;
+	std::cout<<"返回一个机器人：PID:"<<playerid<<"TAG:"<<tag<<std::endl;
 	m_lobby.response_robot(playerid, tag);
 	
 }

@@ -70,24 +70,9 @@ void Landlord_RoomCFG::Load()
 		data.mRoomID = element->IntAttribute("RoomID");
 		data.mRoomName = element->Attribute("RoomName");
 		data.mIsOpen = element->BoolAttribute("IsOpen");
-		{
-			const char* RobTag = element->Attribute("RobTag");
-			std::vector<std::string> vecRobTag;
-			boost::split(vecRobTag, RobTag, boost::is_any_of(","));
-			int temp;
-			for (unsigned int i = 0; i < vecRobTag.size(); i++)
-			{
-				if (tinyxml2::XMLUtil::ToInt(vecRobTag[i].c_str(), &temp))
-				{
-					data.mRobTag.push_back(temp);
-				}
-			}
-		}
 		data.mRoomImage = element->Attribute("RoomImage");
 		data.mVipCondition = element->IntAttribute("VipCondition");
 		data.mGoldCondition = element->IntAttribute("GoldCondition");
-		data.mBetMax = element->IntAttribute("BetMax");
-		data.mRobCount = element->IntAttribute("RobCount");
 		if (mMapData.find(data.mRoomID) != mMapData.end())std::cout <<"data refind:" << data.mRoomID << std::endl;
 		assert(mMapData.find(data.mRoomID) == mMapData.end());
 		mMapData.insert(std::make_pair(data.mRoomID, data));
