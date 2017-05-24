@@ -28,4 +28,4 @@ share/dependencies
 
 server/win/.vs
 
-
+bin/Debug/logs

@@ -39,12 +39,18 @@ enum e_server_msg_type {
   e_mst_c2l_get_room_scene_info = 10002,
   e_mst_c2l_check_state = 10003,
   e_mst_c2l_leave_room = 10004,
+  e_mst_c2l_rob_landlord = 10005,
+  e_mst_c2l_playhand = 10006,
   e_mst_start_l2c = 15000,
   e_mst_l2c_enter_room = 15001,
   e_mst_l2c_get_room_scene_info = 15002,
   e_mst_l2c_check_state = 15003,
   e_mst_l2c_leave_room = 15004,
-  e_mst_l2c_start_game = 15101,
+  e_mst_l2c_playhand = 15005,
+  e_mst_l2c_notice_startgame = 15101,
+  e_mst_l2c_notice_playhand = 15102,
+  e_mst_l2c_notice_rob_landlord = 15103,
+  e_mst_l2c_notice_winlose = 15104,
   e_mst_clend_index = 20000
 };
 bool e_server_msg_type_IsValid(int value);
@@ -86,9 +92,10 @@ enum e_game_state {
   e_game_state_none = 0,
   e_game_state_matching = 1,
   e_game_state_startgame = 2,
-  e_game_state_robLandlore = 3,
-  e_game_state_playhand = 4,
-  e_game_state_award = 5
+  e_game_state_sendcarding = 3,
+  e_game_state_robLandlore = 4,
+  e_game_state_playhand = 5,
+  e_game_state_award = 6
 };
 bool e_game_state_IsValid(int value);
 const e_game_state e_game_state_MIN = e_game_state_none;
@@ -104,6 +111,28 @@ inline bool e_game_state_Parse(
     const ::std::string& name, e_game_state* value) {
   return ::google::protobuf::internal::ParseNamedEnum<e_game_state>(
     e_game_state_descriptor(), name, value);
+}
+enum e_player_game_state {
+  e_player_game_state_none = 0,
+  e_player_game_state_matching = 1,
+  e_player_game_state_playhanding = 2,
+  e_player_game_state_wait_playhanding = 3,
+  e_player_game_state_award = 4
+};
+bool e_player_game_state_IsValid(int value);
+const e_player_game_state e_player_game_state_MIN = e_player_game_state_none;
+const e_player_game_state e_player_game_state_MAX = e_player_game_state_award;
+const int e_player_game_state_ARRAYSIZE = e_player_game_state_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* e_player_game_state_descriptor();
+inline const ::std::string& e_player_game_state_Name(e_player_game_state value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    e_player_game_state_descriptor(), value);
+}
+inline bool e_player_game_state_Parse(
+    const ::std::string& name, e_player_game_state* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<e_player_game_state>(
+    e_player_game_state_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -136,6 +165,11 @@ template <> struct is_proto_enum< ::game_landlord_protocol::e_game_state> : ::go
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::game_landlord_protocol::e_game_state>() {
   return ::game_landlord_protocol::e_game_state_descriptor();
+}
+template <> struct is_proto_enum< ::game_landlord_protocol::e_player_game_state> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::game_landlord_protocol::e_player_game_state>() {
+  return ::game_landlord_protocol::e_player_game_state_descriptor();
 }
 
 }  // namespace google

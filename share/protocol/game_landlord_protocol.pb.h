@@ -43,7 +43,15 @@ class packetc2l_get_room_scene_info;
 class packetl2c_get_room_scene_info_result;
 class packetc2l_check_state;
 class packetl2c_check_state_result;
-class packetl2c_notice_start_game;
+class card_Info;
+class player_info;
+class packetc2l_rob_landlord;
+class packetc2l_playhand;
+class packetl2c_playhand_result;
+class packetl2c_notice_startgame;
+class packetl2c_notice_playhand;
+class packetl2c_notice_rob_landlord;
+class packetl2c_notice_winlose;
 
 // ===================================================================
 
@@ -749,14 +757,14 @@ class packetl2c_check_state_result : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class packetl2c_notice_start_game : public ::google::protobuf::Message {
+class card_Info : public ::google::protobuf::Message {
  public:
-  packetl2c_notice_start_game();
-  virtual ~packetl2c_notice_start_game();
+  card_Info();
+  virtual ~card_Info();
 
-  packetl2c_notice_start_game(const packetl2c_notice_start_game& from);
+  card_Info(const card_Info& from);
 
-  inline packetl2c_notice_start_game& operator=(const packetl2c_notice_start_game& from) {
+  inline card_Info& operator=(const card_Info& from) {
     CopyFrom(from);
     return *this;
   }
@@ -770,17 +778,17 @@ class packetl2c_notice_start_game : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const packetl2c_notice_start_game& default_instance();
+  static const card_Info& default_instance();
 
-  void Swap(packetl2c_notice_start_game* other);
+  void Swap(card_Info* other);
 
   // implements Message ----------------------------------------------
 
-  packetl2c_notice_start_game* New() const;
+  card_Info* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const packetl2c_notice_start_game& from);
-  void MergeFrom(const packetl2c_notice_start_game& from);
+  void CopyFrom(const card_Info& from);
+  void MergeFrom(const card_Info& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -802,14 +810,750 @@ class packetl2c_notice_start_game : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_start_game];
+  // optional int32 deskId = 1;
+  inline bool has_deskid() const;
+  inline void clear_deskid();
+  static const int kDeskIdFieldNumber = 1;
+  inline ::google::protobuf::int32 deskid() const;
+  inline void set_deskid(::google::protobuf::int32 value);
+
+  // repeated int32 cards = 2;
+  inline int cards_size() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 2;
+  inline ::google::protobuf::int32 cards(int index) const;
+  inline void set_cards(int index, ::google::protobuf::int32 value);
+  inline void add_cards(::google::protobuf::int32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      cards() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_cards();
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.card_Info)
+ private:
+  inline void set_has_deskid();
+  inline void clear_has_deskid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > cards_;
+  ::google::protobuf::int32 deskid_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static card_Info* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class player_info : public ::google::protobuf::Message {
+ public:
+  player_info();
+  virtual ~player_info();
+
+  player_info(const player_info& from);
+
+  inline player_info& operator=(const player_info& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const player_info& default_instance();
+
+  void Swap(player_info* other);
+
+  // implements Message ----------------------------------------------
+
+  player_info* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const player_info& from);
+  void MergeFrom(const player_info& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 player_id = 1;
+  inline bool has_player_id() const;
+  inline void clear_player_id();
+  static const int kPlayerIdFieldNumber = 1;
+  inline ::google::protobuf::int32 player_id() const;
+  inline void set_player_id(::google::protobuf::int32 value);
+
+  // optional string player_nickname = 2;
+  inline bool has_player_nickname() const;
+  inline void clear_player_nickname();
+  static const int kPlayerNicknameFieldNumber = 2;
+  inline const ::std::string& player_nickname() const;
+  inline void set_player_nickname(const ::std::string& value);
+  inline void set_player_nickname(const char* value);
+  inline void set_player_nickname(const char* value, size_t size);
+  inline ::std::string* mutable_player_nickname();
+  inline ::std::string* release_player_nickname();
+  inline void set_allocated_player_nickname(::std::string* player_nickname);
+
+  // optional int32 player_head_frame = 3;
+  inline bool has_player_head_frame() const;
+  inline void clear_player_head_frame();
+  static const int kPlayerHeadFrameFieldNumber = 3;
+  inline ::google::protobuf::int32 player_head_frame() const;
+  inline void set_player_head_frame(::google::protobuf::int32 value);
+
+  // optional string player_head_custom = 4;
+  inline bool has_player_head_custom() const;
+  inline void clear_player_head_custom();
+  static const int kPlayerHeadCustomFieldNumber = 4;
+  inline const ::std::string& player_head_custom() const;
+  inline void set_player_head_custom(const ::std::string& value);
+  inline void set_player_head_custom(const char* value);
+  inline void set_player_head_custom(const char* value, size_t size);
+  inline ::std::string* mutable_player_head_custom();
+  inline ::std::string* release_player_head_custom();
+  inline void set_allocated_player_head_custom(::std::string* player_head_custom);
+
+  // optional int64 player_gold = 5;
+  inline bool has_player_gold() const;
+  inline void clear_player_gold();
+  static const int kPlayerGoldFieldNumber = 5;
+  inline ::google::protobuf::int64 player_gold() const;
+  inline void set_player_gold(::google::protobuf::int64 value);
+
+  // optional int32 player_sex = 6;
+  inline bool has_player_sex() const;
+  inline void clear_player_sex();
+  static const int kPlayerSexFieldNumber = 6;
+  inline ::google::protobuf::int32 player_sex() const;
+  inline void set_player_sex(::google::protobuf::int32 value);
+
+  // optional int32 player_vip_lv = 7;
+  inline bool has_player_vip_lv() const;
+  inline void clear_player_vip_lv();
+  static const int kPlayerVipLvFieldNumber = 7;
+  inline ::google::protobuf::int32 player_vip_lv() const;
+  inline void set_player_vip_lv(::google::protobuf::int32 value);
+
+  // optional int32 deskId = 8;
+  inline bool has_deskid() const;
+  inline void clear_deskid();
+  static const int kDeskIdFieldNumber = 8;
+  inline ::google::protobuf::int32 deskid() const;
+  inline void set_deskid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.player_info)
+ private:
+  inline void set_has_player_id();
+  inline void clear_has_player_id();
+  inline void set_has_player_nickname();
+  inline void clear_has_player_nickname();
+  inline void set_has_player_head_frame();
+  inline void clear_has_player_head_frame();
+  inline void set_has_player_head_custom();
+  inline void clear_has_player_head_custom();
+  inline void set_has_player_gold();
+  inline void clear_has_player_gold();
+  inline void set_has_player_sex();
+  inline void clear_has_player_sex();
+  inline void set_has_player_vip_lv();
+  inline void clear_has_player_vip_lv();
+  inline void set_has_deskid();
+  inline void clear_has_deskid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* player_nickname_;
+  ::google::protobuf::int32 player_id_;
+  ::google::protobuf::int32 player_head_frame_;
+  ::std::string* player_head_custom_;
+  ::google::protobuf::int64 player_gold_;
+  ::google::protobuf::int32 player_sex_;
+  ::google::protobuf::int32 player_vip_lv_;
+  ::google::protobuf::int32 deskid_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static player_info* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetc2l_rob_landlord : public ::google::protobuf::Message {
+ public:
+  packetc2l_rob_landlord();
+  virtual ~packetc2l_rob_landlord();
+
+  packetc2l_rob_landlord(const packetc2l_rob_landlord& from);
+
+  inline packetc2l_rob_landlord& operator=(const packetc2l_rob_landlord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetc2l_rob_landlord& default_instance();
+
+  void Swap(packetc2l_rob_landlord* other);
+
+  // implements Message ----------------------------------------------
+
+  packetc2l_rob_landlord* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetc2l_rob_landlord& from);
+  void MergeFrom(const packetc2l_rob_landlord& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_c2l_rob_landlord];
   inline bool has_packet_id() const;
   inline void clear_packet_id();
   static const int kPacketIdFieldNumber = 1;
   inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
   inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
 
-  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_notice_start_game)
+  // optional int32 or_Rob = 2;
+  inline bool has_or_rob() const;
+  inline void clear_or_rob();
+  static const int kOrRobFieldNumber = 2;
+  inline ::google::protobuf::int32 or_rob() const;
+  inline void set_or_rob(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetc2l_rob_landlord)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_or_rob();
+  inline void clear_has_or_rob();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  int packet_id_;
+  ::google::protobuf::int32 or_rob_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetc2l_rob_landlord* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetc2l_playhand : public ::google::protobuf::Message {
+ public:
+  packetc2l_playhand();
+  virtual ~packetc2l_playhand();
+
+  packetc2l_playhand(const packetc2l_playhand& from);
+
+  inline packetc2l_playhand& operator=(const packetc2l_playhand& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetc2l_playhand& default_instance();
+
+  void Swap(packetc2l_playhand* other);
+
+  // implements Message ----------------------------------------------
+
+  packetc2l_playhand* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetc2l_playhand& from);
+  void MergeFrom(const packetc2l_playhand& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_c2l_playhand];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // optional .game_landlord_protocol.card_Info cards = 2;
+  inline bool has_cards() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 2;
+  inline const ::game_landlord_protocol::card_Info& cards() const;
+  inline ::game_landlord_protocol::card_Info* mutable_cards();
+  inline ::game_landlord_protocol::card_Info* release_cards();
+  inline void set_allocated_cards(::game_landlord_protocol::card_Info* cards);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetc2l_playhand)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_cards();
+  inline void clear_has_cards();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::game_landlord_protocol::card_Info* cards_;
+  int packet_id_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetc2l_playhand* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetl2c_playhand_result : public ::google::protobuf::Message {
+ public:
+  packetl2c_playhand_result();
+  virtual ~packetl2c_playhand_result();
+
+  packetl2c_playhand_result(const packetl2c_playhand_result& from);
+
+  inline packetl2c_playhand_result& operator=(const packetl2c_playhand_result& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetl2c_playhand_result& default_instance();
+
+  void Swap(packetl2c_playhand_result* other);
+
+  // implements Message ----------------------------------------------
+
+  packetl2c_playhand_result* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetl2c_playhand_result& from);
+  void MergeFrom(const packetl2c_playhand_result& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_playhand];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // optional .game_landlord_protocol.e_server_error_code result = 2;
+  inline bool has_result() const;
+  inline void clear_result();
+  static const int kResultFieldNumber = 2;
+  inline ::game_landlord_protocol::e_server_error_code result() const;
+  inline void set_result(::game_landlord_protocol::e_server_error_code value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_playhand_result)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_result();
+  inline void clear_has_result();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  int packet_id_;
+  int result_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetl2c_playhand_result* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetl2c_notice_startgame : public ::google::protobuf::Message {
+ public:
+  packetl2c_notice_startgame();
+  virtual ~packetl2c_notice_startgame();
+
+  packetl2c_notice_startgame(const packetl2c_notice_startgame& from);
+
+  inline packetl2c_notice_startgame& operator=(const packetl2c_notice_startgame& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetl2c_notice_startgame& default_instance();
+
+  void Swap(packetl2c_notice_startgame* other);
+
+  // implements Message ----------------------------------------------
+
+  packetl2c_notice_startgame* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetl2c_notice_startgame& from);
+  void MergeFrom(const packetl2c_notice_startgame& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_startgame];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // repeated .game_landlord_protocol.card_Info cards = 2;
+  inline int cards_size() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 2;
+  inline const ::game_landlord_protocol::card_Info& cards(int index) const;
+  inline ::game_landlord_protocol::card_Info* mutable_cards(int index);
+  inline ::game_landlord_protocol::card_Info* add_cards();
+  inline const ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::card_Info >&
+      cards() const;
+  inline ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::card_Info >*
+      mutable_cards();
+
+  // optional int32 opencard = 3;
+  inline bool has_opencard() const;
+  inline void clear_opencard();
+  static const int kOpencardFieldNumber = 3;
+  inline ::google::protobuf::int32 opencard() const;
+  inline void set_opencard(::google::protobuf::int32 value);
+
+  // repeated .game_landlord_protocol.player_info playerList = 4;
+  inline int playerlist_size() const;
+  inline void clear_playerlist();
+  static const int kPlayerListFieldNumber = 4;
+  inline const ::game_landlord_protocol::player_info& playerlist(int index) const;
+  inline ::game_landlord_protocol::player_info* mutable_playerlist(int index);
+  inline ::game_landlord_protocol::player_info* add_playerlist();
+  inline const ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::player_info >&
+      playerlist() const;
+  inline ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::player_info >*
+      mutable_playerlist();
+
+  // optional int32 landlord_Id = 5;
+  inline bool has_landlord_id() const;
+  inline void clear_landlord_id();
+  static const int kLandlordIdFieldNumber = 5;
+  inline ::google::protobuf::int32 landlord_id() const;
+  inline void set_landlord_id(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_notice_startgame)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_opencard();
+  inline void clear_has_opencard();
+  inline void set_has_landlord_id();
+  inline void clear_has_landlord_id();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::card_Info > cards_;
+  int packet_id_;
+  ::google::protobuf::int32 opencard_;
+  ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::player_info > playerlist_;
+  ::google::protobuf::int32 landlord_id_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetl2c_notice_startgame* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetl2c_notice_playhand : public ::google::protobuf::Message {
+ public:
+  packetl2c_notice_playhand();
+  virtual ~packetl2c_notice_playhand();
+
+  packetl2c_notice_playhand(const packetl2c_notice_playhand& from);
+
+  inline packetl2c_notice_playhand& operator=(const packetl2c_notice_playhand& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetl2c_notice_playhand& default_instance();
+
+  void Swap(packetl2c_notice_playhand* other);
+
+  // implements Message ----------------------------------------------
+
+  packetl2c_notice_playhand* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetl2c_notice_playhand& from);
+  void MergeFrom(const packetl2c_notice_playhand& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_playhand];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // optional .game_landlord_protocol.card_Info cards = 2;
+  inline bool has_cards() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 2;
+  inline const ::game_landlord_protocol::card_Info& cards() const;
+  inline ::game_landlord_protocol::card_Info* mutable_cards();
+  inline ::game_landlord_protocol::card_Info* release_cards();
+  inline void set_allocated_cards(::game_landlord_protocol::card_Info* cards);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_notice_playhand)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_cards();
+  inline void clear_has_cards();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::game_landlord_protocol::card_Info* cards_;
+  int packet_id_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetl2c_notice_playhand* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetl2c_notice_rob_landlord : public ::google::protobuf::Message {
+ public:
+  packetl2c_notice_rob_landlord();
+  virtual ~packetl2c_notice_rob_landlord();
+
+  packetl2c_notice_rob_landlord(const packetl2c_notice_rob_landlord& from);
+
+  inline packetl2c_notice_rob_landlord& operator=(const packetl2c_notice_rob_landlord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetl2c_notice_rob_landlord& default_instance();
+
+  void Swap(packetl2c_notice_rob_landlord* other);
+
+  // implements Message ----------------------------------------------
+
+  packetl2c_notice_rob_landlord* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetl2c_notice_rob_landlord& from);
+  void MergeFrom(const packetl2c_notice_rob_landlord& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_rob_landlord];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_notice_rob_landlord)
  private:
   inline void set_has_packet_id();
   inline void clear_has_packet_id();
@@ -824,7 +1568,106 @@ class packetl2c_notice_start_game : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
 
   void InitAsDefaultInstance();
-  static packetl2c_notice_start_game* default_instance_;
+  static packetl2c_notice_rob_landlord* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class packetl2c_notice_winlose : public ::google::protobuf::Message {
+ public:
+  packetl2c_notice_winlose();
+  virtual ~packetl2c_notice_winlose();
+
+  packetl2c_notice_winlose(const packetl2c_notice_winlose& from);
+
+  inline packetl2c_notice_winlose& operator=(const packetl2c_notice_winlose& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const packetl2c_notice_winlose& default_instance();
+
+  void Swap(packetl2c_notice_winlose* other);
+
+  // implements Message ----------------------------------------------
+
+  packetl2c_notice_winlose* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const packetl2c_notice_winlose& from);
+  void MergeFrom(const packetl2c_notice_winlose& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_winlose];
+  inline bool has_packet_id() const;
+  inline void clear_packet_id();
+  static const int kPacketIdFieldNumber = 1;
+  inline ::game_landlord_protocol::e_server_msg_type packet_id() const;
+  inline void set_packet_id(::game_landlord_protocol::e_server_msg_type value);
+
+  // optional int32 win_deskId = 2;
+  inline bool has_win_deskid() const;
+  inline void clear_win_deskid();
+  static const int kWinDeskIdFieldNumber = 2;
+  inline ::google::protobuf::int32 win_deskid() const;
+  inline void set_win_deskid(::google::protobuf::int32 value);
+
+  // optional int32 win_gold = 3;
+  inline bool has_win_gold() const;
+  inline void clear_win_gold();
+  static const int kWinGoldFieldNumber = 3;
+  inline ::google::protobuf::int32 win_gold() const;
+  inline void set_win_gold(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:game_landlord_protocol.packetl2c_notice_winlose)
+ private:
+  inline void set_has_packet_id();
+  inline void clear_has_packet_id();
+  inline void set_has_win_deskid();
+  inline void clear_has_win_deskid();
+  inline void set_has_win_gold();
+  inline void clear_has_win_gold();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  int packet_id_;
+  ::google::protobuf::int32 win_deskid_;
+  ::google::protobuf::int32 win_gold_;
+  friend void  protobuf_AddDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_AssignDesc_game_5flandlord_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_game_5flandlord_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static packetl2c_notice_winlose* default_instance_;
 };
 // ===================================================================
 
@@ -1233,31 +2076,850 @@ inline void packetl2c_check_state_result::set_is_intable(bool value) {
 
 // -------------------------------------------------------------------
 
-// packetl2c_notice_start_game
+// card_Info
 
-// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_start_game];
-inline bool packetl2c_notice_start_game::has_packet_id() const {
+// optional int32 deskId = 1;
+inline bool card_Info::has_deskid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void packetl2c_notice_start_game::set_has_packet_id() {
+inline void card_Info::set_has_deskid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void packetl2c_notice_start_game::clear_has_packet_id() {
+inline void card_Info::clear_has_deskid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void packetl2c_notice_start_game::clear_packet_id() {
-  packet_id_ = 15101;
+inline void card_Info::clear_deskid() {
+  deskid_ = 0;
+  clear_has_deskid();
+}
+inline ::google::protobuf::int32 card_Info::deskid() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.card_Info.deskId)
+  return deskid_;
+}
+inline void card_Info::set_deskid(::google::protobuf::int32 value) {
+  set_has_deskid();
+  deskid_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.card_Info.deskId)
+}
+
+// repeated int32 cards = 2;
+inline int card_Info::cards_size() const {
+  return cards_.size();
+}
+inline void card_Info::clear_cards() {
+  cards_.Clear();
+}
+inline ::google::protobuf::int32 card_Info::cards(int index) const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.card_Info.cards)
+  return cards_.Get(index);
+}
+inline void card_Info::set_cards(int index, ::google::protobuf::int32 value) {
+  cards_.Set(index, value);
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.card_Info.cards)
+}
+inline void card_Info::add_cards(::google::protobuf::int32 value) {
+  cards_.Add(value);
+  // @@protoc_insertion_point(field_add:game_landlord_protocol.card_Info.cards)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+card_Info::cards() const {
+  // @@protoc_insertion_point(field_list:game_landlord_protocol.card_Info.cards)
+  return cards_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+card_Info::mutable_cards() {
+  // @@protoc_insertion_point(field_mutable_list:game_landlord_protocol.card_Info.cards)
+  return &cards_;
+}
+
+// -------------------------------------------------------------------
+
+// player_info
+
+// optional int32 player_id = 1;
+inline bool player_info::has_player_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void player_info::set_has_player_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void player_info::clear_has_player_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void player_info::clear_player_id() {
+  player_id_ = 0;
+  clear_has_player_id();
+}
+inline ::google::protobuf::int32 player_info::player_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_id)
+  return player_id_;
+}
+inline void player_info::set_player_id(::google::protobuf::int32 value) {
+  set_has_player_id();
+  player_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_id)
+}
+
+// optional string player_nickname = 2;
+inline bool player_info::has_player_nickname() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void player_info::set_has_player_nickname() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void player_info::clear_has_player_nickname() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void player_info::clear_player_nickname() {
+  if (player_nickname_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_nickname_->clear();
+  }
+  clear_has_player_nickname();
+}
+inline const ::std::string& player_info::player_nickname() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_nickname)
+  return *player_nickname_;
+}
+inline void player_info::set_player_nickname(const ::std::string& value) {
+  set_has_player_nickname();
+  if (player_nickname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_nickname_ = new ::std::string;
+  }
+  player_nickname_->assign(value);
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_nickname)
+}
+inline void player_info::set_player_nickname(const char* value) {
+  set_has_player_nickname();
+  if (player_nickname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_nickname_ = new ::std::string;
+  }
+  player_nickname_->assign(value);
+  // @@protoc_insertion_point(field_set_char:game_landlord_protocol.player_info.player_nickname)
+}
+inline void player_info::set_player_nickname(const char* value, size_t size) {
+  set_has_player_nickname();
+  if (player_nickname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_nickname_ = new ::std::string;
+  }
+  player_nickname_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:game_landlord_protocol.player_info.player_nickname)
+}
+inline ::std::string* player_info::mutable_player_nickname() {
+  set_has_player_nickname();
+  if (player_nickname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_nickname_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.player_info.player_nickname)
+  return player_nickname_;
+}
+inline ::std::string* player_info::release_player_nickname() {
+  clear_has_player_nickname();
+  if (player_nickname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = player_nickname_;
+    player_nickname_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void player_info::set_allocated_player_nickname(::std::string* player_nickname) {
+  if (player_nickname_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete player_nickname_;
+  }
+  if (player_nickname) {
+    set_has_player_nickname();
+    player_nickname_ = player_nickname;
+  } else {
+    clear_has_player_nickname();
+    player_nickname_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:game_landlord_protocol.player_info.player_nickname)
+}
+
+// optional int32 player_head_frame = 3;
+inline bool player_info::has_player_head_frame() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void player_info::set_has_player_head_frame() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void player_info::clear_has_player_head_frame() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void player_info::clear_player_head_frame() {
+  player_head_frame_ = 0;
+  clear_has_player_head_frame();
+}
+inline ::google::protobuf::int32 player_info::player_head_frame() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_head_frame)
+  return player_head_frame_;
+}
+inline void player_info::set_player_head_frame(::google::protobuf::int32 value) {
+  set_has_player_head_frame();
+  player_head_frame_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_head_frame)
+}
+
+// optional string player_head_custom = 4;
+inline bool player_info::has_player_head_custom() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void player_info::set_has_player_head_custom() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void player_info::clear_has_player_head_custom() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void player_info::clear_player_head_custom() {
+  if (player_head_custom_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_head_custom_->clear();
+  }
+  clear_has_player_head_custom();
+}
+inline const ::std::string& player_info::player_head_custom() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_head_custom)
+  return *player_head_custom_;
+}
+inline void player_info::set_player_head_custom(const ::std::string& value) {
+  set_has_player_head_custom();
+  if (player_head_custom_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_head_custom_ = new ::std::string;
+  }
+  player_head_custom_->assign(value);
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_head_custom)
+}
+inline void player_info::set_player_head_custom(const char* value) {
+  set_has_player_head_custom();
+  if (player_head_custom_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_head_custom_ = new ::std::string;
+  }
+  player_head_custom_->assign(value);
+  // @@protoc_insertion_point(field_set_char:game_landlord_protocol.player_info.player_head_custom)
+}
+inline void player_info::set_player_head_custom(const char* value, size_t size) {
+  set_has_player_head_custom();
+  if (player_head_custom_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_head_custom_ = new ::std::string;
+  }
+  player_head_custom_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:game_landlord_protocol.player_info.player_head_custom)
+}
+inline ::std::string* player_info::mutable_player_head_custom() {
+  set_has_player_head_custom();
+  if (player_head_custom_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    player_head_custom_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.player_info.player_head_custom)
+  return player_head_custom_;
+}
+inline ::std::string* player_info::release_player_head_custom() {
+  clear_has_player_head_custom();
+  if (player_head_custom_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = player_head_custom_;
+    player_head_custom_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void player_info::set_allocated_player_head_custom(::std::string* player_head_custom) {
+  if (player_head_custom_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete player_head_custom_;
+  }
+  if (player_head_custom) {
+    set_has_player_head_custom();
+    player_head_custom_ = player_head_custom;
+  } else {
+    clear_has_player_head_custom();
+    player_head_custom_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:game_landlord_protocol.player_info.player_head_custom)
+}
+
+// optional int64 player_gold = 5;
+inline bool player_info::has_player_gold() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void player_info::set_has_player_gold() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void player_info::clear_has_player_gold() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void player_info::clear_player_gold() {
+  player_gold_ = GOOGLE_LONGLONG(0);
+  clear_has_player_gold();
+}
+inline ::google::protobuf::int64 player_info::player_gold() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_gold)
+  return player_gold_;
+}
+inline void player_info::set_player_gold(::google::protobuf::int64 value) {
+  set_has_player_gold();
+  player_gold_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_gold)
+}
+
+// optional int32 player_sex = 6;
+inline bool player_info::has_player_sex() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void player_info::set_has_player_sex() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void player_info::clear_has_player_sex() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void player_info::clear_player_sex() {
+  player_sex_ = 0;
+  clear_has_player_sex();
+}
+inline ::google::protobuf::int32 player_info::player_sex() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_sex)
+  return player_sex_;
+}
+inline void player_info::set_player_sex(::google::protobuf::int32 value) {
+  set_has_player_sex();
+  player_sex_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_sex)
+}
+
+// optional int32 player_vip_lv = 7;
+inline bool player_info::has_player_vip_lv() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void player_info::set_has_player_vip_lv() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void player_info::clear_has_player_vip_lv() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void player_info::clear_player_vip_lv() {
+  player_vip_lv_ = 0;
+  clear_has_player_vip_lv();
+}
+inline ::google::protobuf::int32 player_info::player_vip_lv() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.player_vip_lv)
+  return player_vip_lv_;
+}
+inline void player_info::set_player_vip_lv(::google::protobuf::int32 value) {
+  set_has_player_vip_lv();
+  player_vip_lv_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.player_vip_lv)
+}
+
+// optional int32 deskId = 8;
+inline bool player_info::has_deskid() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void player_info::set_has_deskid() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void player_info::clear_has_deskid() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void player_info::clear_deskid() {
+  deskid_ = 0;
+  clear_has_deskid();
+}
+inline ::google::protobuf::int32 player_info::deskid() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.player_info.deskId)
+  return deskid_;
+}
+inline void player_info::set_deskid(::google::protobuf::int32 value) {
+  set_has_deskid();
+  deskid_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.player_info.deskId)
+}
+
+// -------------------------------------------------------------------
+
+// packetc2l_rob_landlord
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_c2l_rob_landlord];
+inline bool packetc2l_rob_landlord::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetc2l_rob_landlord::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetc2l_rob_landlord::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetc2l_rob_landlord::clear_packet_id() {
+  packet_id_ = 10005;
   clear_has_packet_id();
 }
-inline ::game_landlord_protocol::e_server_msg_type packetl2c_notice_start_game::packet_id() const {
-  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_start_game.packet_id)
+inline ::game_landlord_protocol::e_server_msg_type packetc2l_rob_landlord::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetc2l_rob_landlord.packet_id)
   return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
 }
-inline void packetl2c_notice_start_game::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+inline void packetc2l_rob_landlord::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
   assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
   set_has_packet_id();
   packet_id_ = value;
-  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_start_game.packet_id)
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetc2l_rob_landlord.packet_id)
+}
+
+// optional int32 or_Rob = 2;
+inline bool packetc2l_rob_landlord::has_or_rob() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void packetc2l_rob_landlord::set_has_or_rob() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void packetc2l_rob_landlord::clear_has_or_rob() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void packetc2l_rob_landlord::clear_or_rob() {
+  or_rob_ = 0;
+  clear_has_or_rob();
+}
+inline ::google::protobuf::int32 packetc2l_rob_landlord::or_rob() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetc2l_rob_landlord.or_Rob)
+  return or_rob_;
+}
+inline void packetc2l_rob_landlord::set_or_rob(::google::protobuf::int32 value) {
+  set_has_or_rob();
+  or_rob_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetc2l_rob_landlord.or_Rob)
+}
+
+// -------------------------------------------------------------------
+
+// packetc2l_playhand
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_c2l_playhand];
+inline bool packetc2l_playhand::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetc2l_playhand::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetc2l_playhand::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetc2l_playhand::clear_packet_id() {
+  packet_id_ = 10006;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetc2l_playhand::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetc2l_playhand.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetc2l_playhand::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetc2l_playhand.packet_id)
+}
+
+// optional .game_landlord_protocol.card_Info cards = 2;
+inline bool packetc2l_playhand::has_cards() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void packetc2l_playhand::set_has_cards() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void packetc2l_playhand::clear_has_cards() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void packetc2l_playhand::clear_cards() {
+  if (cards_ != NULL) cards_->::game_landlord_protocol::card_Info::Clear();
+  clear_has_cards();
+}
+inline const ::game_landlord_protocol::card_Info& packetc2l_playhand::cards() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetc2l_playhand.cards)
+  return cards_ != NULL ? *cards_ : *default_instance_->cards_;
+}
+inline ::game_landlord_protocol::card_Info* packetc2l_playhand::mutable_cards() {
+  set_has_cards();
+  if (cards_ == NULL) cards_ = new ::game_landlord_protocol::card_Info;
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.packetc2l_playhand.cards)
+  return cards_;
+}
+inline ::game_landlord_protocol::card_Info* packetc2l_playhand::release_cards() {
+  clear_has_cards();
+  ::game_landlord_protocol::card_Info* temp = cards_;
+  cards_ = NULL;
+  return temp;
+}
+inline void packetc2l_playhand::set_allocated_cards(::game_landlord_protocol::card_Info* cards) {
+  delete cards_;
+  cards_ = cards;
+  if (cards) {
+    set_has_cards();
+  } else {
+    clear_has_cards();
+  }
+  // @@protoc_insertion_point(field_set_allocated:game_landlord_protocol.packetc2l_playhand.cards)
+}
+
+// -------------------------------------------------------------------
+
+// packetl2c_playhand_result
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_playhand];
+inline bool packetl2c_playhand_result::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetl2c_playhand_result::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetl2c_playhand_result::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetl2c_playhand_result::clear_packet_id() {
+  packet_id_ = 15005;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetl2c_playhand_result::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_playhand_result.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetl2c_playhand_result::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_playhand_result.packet_id)
+}
+
+// optional .game_landlord_protocol.e_server_error_code result = 2;
+inline bool packetl2c_playhand_result::has_result() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void packetl2c_playhand_result::set_has_result() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void packetl2c_playhand_result::clear_has_result() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void packetl2c_playhand_result::clear_result() {
+  result_ = 1;
+  clear_has_result();
+}
+inline ::game_landlord_protocol::e_server_error_code packetl2c_playhand_result::result() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_playhand_result.result)
+  return static_cast< ::game_landlord_protocol::e_server_error_code >(result_);
+}
+inline void packetl2c_playhand_result::set_result(::game_landlord_protocol::e_server_error_code value) {
+  assert(::game_landlord_protocol::e_server_error_code_IsValid(value));
+  set_has_result();
+  result_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_playhand_result.result)
+}
+
+// -------------------------------------------------------------------
+
+// packetl2c_notice_startgame
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_startgame];
+inline bool packetl2c_notice_startgame::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetl2c_notice_startgame::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetl2c_notice_startgame::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetl2c_notice_startgame::clear_packet_id() {
+  packet_id_ = 15101;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetl2c_notice_startgame::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_startgame.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetl2c_notice_startgame::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_startgame.packet_id)
+}
+
+// repeated .game_landlord_protocol.card_Info cards = 2;
+inline int packetl2c_notice_startgame::cards_size() const {
+  return cards_.size();
+}
+inline void packetl2c_notice_startgame::clear_cards() {
+  cards_.Clear();
+}
+inline const ::game_landlord_protocol::card_Info& packetl2c_notice_startgame::cards(int index) const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_startgame.cards)
+  return cards_.Get(index);
+}
+inline ::game_landlord_protocol::card_Info* packetl2c_notice_startgame::mutable_cards(int index) {
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.packetl2c_notice_startgame.cards)
+  return cards_.Mutable(index);
+}
+inline ::game_landlord_protocol::card_Info* packetl2c_notice_startgame::add_cards() {
+  // @@protoc_insertion_point(field_add:game_landlord_protocol.packetl2c_notice_startgame.cards)
+  return cards_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::card_Info >&
+packetl2c_notice_startgame::cards() const {
+  // @@protoc_insertion_point(field_list:game_landlord_protocol.packetl2c_notice_startgame.cards)
+  return cards_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::card_Info >*
+packetl2c_notice_startgame::mutable_cards() {
+  // @@protoc_insertion_point(field_mutable_list:game_landlord_protocol.packetl2c_notice_startgame.cards)
+  return &cards_;
+}
+
+// optional int32 opencard = 3;
+inline bool packetl2c_notice_startgame::has_opencard() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void packetl2c_notice_startgame::set_has_opencard() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void packetl2c_notice_startgame::clear_has_opencard() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void packetl2c_notice_startgame::clear_opencard() {
+  opencard_ = 0;
+  clear_has_opencard();
+}
+inline ::google::protobuf::int32 packetl2c_notice_startgame::opencard() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_startgame.opencard)
+  return opencard_;
+}
+inline void packetl2c_notice_startgame::set_opencard(::google::protobuf::int32 value) {
+  set_has_opencard();
+  opencard_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_startgame.opencard)
+}
+
+// repeated .game_landlord_protocol.player_info playerList = 4;
+inline int packetl2c_notice_startgame::playerlist_size() const {
+  return playerlist_.size();
+}
+inline void packetl2c_notice_startgame::clear_playerlist() {
+  playerlist_.Clear();
+}
+inline const ::game_landlord_protocol::player_info& packetl2c_notice_startgame::playerlist(int index) const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_startgame.playerList)
+  return playerlist_.Get(index);
+}
+inline ::game_landlord_protocol::player_info* packetl2c_notice_startgame::mutable_playerlist(int index) {
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.packetl2c_notice_startgame.playerList)
+  return playerlist_.Mutable(index);
+}
+inline ::game_landlord_protocol::player_info* packetl2c_notice_startgame::add_playerlist() {
+  // @@protoc_insertion_point(field_add:game_landlord_protocol.packetl2c_notice_startgame.playerList)
+  return playerlist_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::player_info >&
+packetl2c_notice_startgame::playerlist() const {
+  // @@protoc_insertion_point(field_list:game_landlord_protocol.packetl2c_notice_startgame.playerList)
+  return playerlist_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::game_landlord_protocol::player_info >*
+packetl2c_notice_startgame::mutable_playerlist() {
+  // @@protoc_insertion_point(field_mutable_list:game_landlord_protocol.packetl2c_notice_startgame.playerList)
+  return &playerlist_;
+}
+
+// optional int32 landlord_Id = 5;
+inline bool packetl2c_notice_startgame::has_landlord_id() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void packetl2c_notice_startgame::set_has_landlord_id() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void packetl2c_notice_startgame::clear_has_landlord_id() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void packetl2c_notice_startgame::clear_landlord_id() {
+  landlord_id_ = 0;
+  clear_has_landlord_id();
+}
+inline ::google::protobuf::int32 packetl2c_notice_startgame::landlord_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_startgame.landlord_Id)
+  return landlord_id_;
+}
+inline void packetl2c_notice_startgame::set_landlord_id(::google::protobuf::int32 value) {
+  set_has_landlord_id();
+  landlord_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_startgame.landlord_Id)
+}
+
+// -------------------------------------------------------------------
+
+// packetl2c_notice_playhand
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_playhand];
+inline bool packetl2c_notice_playhand::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetl2c_notice_playhand::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetl2c_notice_playhand::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetl2c_notice_playhand::clear_packet_id() {
+  packet_id_ = 15102;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetl2c_notice_playhand::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_playhand.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetl2c_notice_playhand::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_playhand.packet_id)
+}
+
+// optional .game_landlord_protocol.card_Info cards = 2;
+inline bool packetl2c_notice_playhand::has_cards() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void packetl2c_notice_playhand::set_has_cards() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void packetl2c_notice_playhand::clear_has_cards() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void packetl2c_notice_playhand::clear_cards() {
+  if (cards_ != NULL) cards_->::game_landlord_protocol::card_Info::Clear();
+  clear_has_cards();
+}
+inline const ::game_landlord_protocol::card_Info& packetl2c_notice_playhand::cards() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_playhand.cards)
+  return cards_ != NULL ? *cards_ : *default_instance_->cards_;
+}
+inline ::game_landlord_protocol::card_Info* packetl2c_notice_playhand::mutable_cards() {
+  set_has_cards();
+  if (cards_ == NULL) cards_ = new ::game_landlord_protocol::card_Info;
+  // @@protoc_insertion_point(field_mutable:game_landlord_protocol.packetl2c_notice_playhand.cards)
+  return cards_;
+}
+inline ::game_landlord_protocol::card_Info* packetl2c_notice_playhand::release_cards() {
+  clear_has_cards();
+  ::game_landlord_protocol::card_Info* temp = cards_;
+  cards_ = NULL;
+  return temp;
+}
+inline void packetl2c_notice_playhand::set_allocated_cards(::game_landlord_protocol::card_Info* cards) {
+  delete cards_;
+  cards_ = cards;
+  if (cards) {
+    set_has_cards();
+  } else {
+    clear_has_cards();
+  }
+  // @@protoc_insertion_point(field_set_allocated:game_landlord_protocol.packetl2c_notice_playhand.cards)
+}
+
+// -------------------------------------------------------------------
+
+// packetl2c_notice_rob_landlord
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_rob_landlord];
+inline bool packetl2c_notice_rob_landlord::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetl2c_notice_rob_landlord::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetl2c_notice_rob_landlord::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetl2c_notice_rob_landlord::clear_packet_id() {
+  packet_id_ = 15103;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetl2c_notice_rob_landlord::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_rob_landlord.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetl2c_notice_rob_landlord::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_rob_landlord.packet_id)
+}
+
+// -------------------------------------------------------------------
+
+// packetl2c_notice_winlose
+
+// optional .game_landlord_protocol.e_server_msg_type packet_id = 1 [default = e_mst_l2c_notice_winlose];
+inline bool packetl2c_notice_winlose::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void packetl2c_notice_winlose::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void packetl2c_notice_winlose::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void packetl2c_notice_winlose::clear_packet_id() {
+  packet_id_ = 15104;
+  clear_has_packet_id();
+}
+inline ::game_landlord_protocol::e_server_msg_type packetl2c_notice_winlose::packet_id() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_winlose.packet_id)
+  return static_cast< ::game_landlord_protocol::e_server_msg_type >(packet_id_);
+}
+inline void packetl2c_notice_winlose::set_packet_id(::game_landlord_protocol::e_server_msg_type value) {
+  assert(::game_landlord_protocol::e_server_msg_type_IsValid(value));
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_winlose.packet_id)
+}
+
+// optional int32 win_deskId = 2;
+inline bool packetl2c_notice_winlose::has_win_deskid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void packetl2c_notice_winlose::set_has_win_deskid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void packetl2c_notice_winlose::clear_has_win_deskid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void packetl2c_notice_winlose::clear_win_deskid() {
+  win_deskid_ = 0;
+  clear_has_win_deskid();
+}
+inline ::google::protobuf::int32 packetl2c_notice_winlose::win_deskid() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_winlose.win_deskId)
+  return win_deskid_;
+}
+inline void packetl2c_notice_winlose::set_win_deskid(::google::protobuf::int32 value) {
+  set_has_win_deskid();
+  win_deskid_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_winlose.win_deskId)
+}
+
+// optional int32 win_gold = 3;
+inline bool packetl2c_notice_winlose::has_win_gold() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void packetl2c_notice_winlose::set_has_win_gold() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void packetl2c_notice_winlose::clear_has_win_gold() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void packetl2c_notice_winlose::clear_win_gold() {
+  win_gold_ = 0;
+  clear_has_win_gold();
+}
+inline ::google::protobuf::int32 packetl2c_notice_winlose::win_gold() const {
+  // @@protoc_insertion_point(field_get:game_landlord_protocol.packetl2c_notice_winlose.win_gold)
+  return win_gold_;
+}
+inline void packetl2c_notice_winlose::set_win_gold(::google::protobuf::int32 value) {
+  set_has_win_gold();
+  win_gold_ = value;
+  // @@protoc_insertion_point(field_set:game_landlord_protocol.packetl2c_notice_winlose.win_gold)
 }
 
 

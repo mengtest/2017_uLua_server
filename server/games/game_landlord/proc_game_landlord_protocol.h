@@ -25,6 +25,20 @@ PACKET_REGEDIT_SEND(packetl2c_get_room_scene_info_result);
 PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_check_state, i_game_player);
 PACKET_REGEDIT_SEND(packetl2c_check_state_result);
 
+//请求出牌
+PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_playhand, i_game_player);
+PACKET_REGEDIT_SEND(packetl2c_playhand_result);
+
+//抢地主
+PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_rob_landlord, i_game_player);
+
 //通知开始游戏
-PACKET_REGEDIT_SEND(packetl2c_notice_start_game);
+PACKET_REGEDIT_SEND(packetl2c_notice_startgame);
+//通知 其他人出牌信息
+PACKET_REGEDIT_SEND(packetl2c_notice_playhand);
+//通知 是否你要抢地主
+PACKET_REGEDIT_SEND(packetl2c_notice_rob_landlord);
+//通知 胜负
+PACKET_REGEDIT_SEND(packetl2c_notice_winlose);
+
 

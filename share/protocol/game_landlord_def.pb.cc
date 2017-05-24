@@ -23,6 +23,7 @@ namespace {
 const ::google::protobuf::EnumDescriptor* e_server_msg_type_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* e_server_error_code_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* e_game_state_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* e_player_game_state_descriptor_ = NULL;
 
 }  // namespace
 
@@ -36,6 +37,7 @@ void protobuf_AssignDesc_game_5flandlord_5fdef_2eproto() {
   e_server_msg_type_descriptor_ = file->enum_type(0);
   e_server_error_code_descriptor_ = file->enum_type(1);
   e_game_state_descriptor_ = file->enum_type(2);
+  e_player_game_state_descriptor_ = file->enum_type(3);
 }
 
 namespace {
@@ -63,23 +65,33 @@ void protobuf_AddDesc_game_5flandlord_5fdef_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\027game_landlord_def.proto\022\026game_landlord"
-    "_protocol*\337\002\n\021e_server_msg_type\022\024\n\017e_mst"
+    "_protocol*\227\004\n\021e_server_msg_type\022\024\n\017e_mst"
     "_start_c2l\020\220N\022\031\n\024e_mst_c2l_enter_room\020\221N"
     "\022\"\n\035e_mst_c2l_get_room_scene_info\020\222N\022\032\n\025"
     "e_mst_c2l_check_state\020\223N\022\031\n\024e_mst_c2l_le"
-    "ave_room\020\224N\022\024\n\017e_mst_start_l2c\020\230u\022\031\n\024e_m"
-    "st_l2c_enter_room\020\231u\022\"\n\035e_mst_l2c_get_ro"
-    "om_scene_info\020\232u\022\032\n\025e_mst_l2c_check_stat"
-    "e\020\233u\022\031\n\024e_mst_l2c_leave_room\020\234u\022\031\n\024e_mst"
-    "_l2c_start_game\020\375u\022\027\n\021e_mst_clend_index\020"
-    "\240\234\001*k\n\023e_server_error_code\022\030\n\024e_error_co"
-    "de_success\020\001\022\027\n\023e_error_code_failed\020\002\022!\n"
-    "\035e_error_code_not_enough_money\020\003*\255\001\n\014e_g"
-    "ame_state\022\025\n\021e_game_state_none\020\000\022\031\n\025e_ga"
-    "me_state_matching\020\001\022\032\n\026e_game_state_star"
-    "tgame\020\002\022\034\n\030e_game_state_robLandlore\020\003\022\031\n"
-    "\025e_game_state_playhand\020\004\022\026\n\022e_game_state"
-    "_award\020\005", 688);
+    "ave_room\020\224N\022\033\n\026e_mst_c2l_rob_landlord\020\225N"
+    "\022\027\n\022e_mst_c2l_playhand\020\226N\022\024\n\017e_mst_start"
+    "_l2c\020\230u\022\031\n\024e_mst_l2c_enter_room\020\231u\022\"\n\035e_"
+    "mst_l2c_get_room_scene_info\020\232u\022\032\n\025e_mst_"
+    "l2c_check_state\020\233u\022\031\n\024e_mst_l2c_leave_ro"
+    "om\020\234u\022\027\n\022e_mst_l2c_playhand\020\235u\022\037\n\032e_mst_"
+    "l2c_notice_startgame\020\375u\022\036\n\031e_mst_l2c_not"
+    "ice_playhand\020\376u\022\"\n\035e_mst_l2c_notice_rob_"
+    "landlord\020\377u\022\035\n\030e_mst_l2c_notice_winlose\020"
+    "\200v\022\027\n\021e_mst_clend_index\020\240\234\001*k\n\023e_server_"
+    "error_code\022\030\n\024e_error_code_success\020\001\022\027\n\023"
+    "e_error_code_failed\020\002\022!\n\035e_error_code_no"
+    "t_enough_money\020\003*\313\001\n\014e_game_state\022\025\n\021e_g"
+    "ame_state_none\020\000\022\031\n\025e_game_state_matchin"
+    "g\020\001\022\032\n\026e_game_state_startgame\020\002\022\034\n\030e_gam"
+    "e_state_sendcarding\020\003\022\034\n\030e_game_state_ro"
+    "bLandlore\020\004\022\031\n\025e_game_state_playhand\020\005\022\026"
+    "\n\022e_game_state_award\020\006*\303\001\n\023e_player_game"
+    "_state\022\034\n\030e_player_game_state_none\020\000\022 \n\034"
+    "e_player_game_state_matching\020\001\022#\n\037e_play"
+    "er_game_state_playhanding\020\002\022(\n$e_player_"
+    "game_state_wait_playhanding\020\003\022\035\n\031e_playe"
+    "r_game_state_award\020\004", 1100);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "game_landlord_def.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_game_5flandlord_5fdef_2eproto);
@@ -102,12 +114,18 @@ bool e_server_msg_type_IsValid(int value) {
     case 10002:
     case 10003:
     case 10004:
+    case 10005:
+    case 10006:
     case 15000:
     case 15001:
     case 15002:
     case 15003:
     case 15004:
+    case 15005:
     case 15101:
+    case 15102:
+    case 15103:
+    case 15104:
     case 20000:
       return true;
     default:
@@ -142,6 +160,24 @@ bool e_game_state_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* e_player_game_state_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return e_player_game_state_descriptor_;
+}
+bool e_player_game_state_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
       return true;
     default:
       return false;

@@ -19,7 +19,14 @@ void init_proc_landlord_protocol()
 	packetc2l_check_state_factory::regedit_factory();
 	packetl2c_check_state_result_factory::regedit_factory();
 
-	packetl2c_notice_start_game_factory::regedit_factory();
+	packetc2l_playhand_factory::regedit_factory();
+	packetl2c_playhand_result_factory::regedit_factory();
+	packetc2l_rob_landlord_factory::regedit_factory();
+
+	packetl2c_notice_startgame_factory::regedit_factory();
+	packetl2c_notice_playhand_factory::regedit_factory();
+	packetl2c_notice_rob_landlord_factory::regedit_factory();
+	packetl2c_notice_winlose_factory::regedit_factory();
 }
 
 //进入斗地主房间
@@ -69,11 +76,40 @@ bool packetc2l_get_room_scene_info_factory::packet_process(shared_ptr<peer_tcp> 
 bool packetc2l_check_state_factory::packet_process(shared_ptr<peer_tcp> peer, shared_ptr<i_game_player> player, shared_ptr<packetc2l_check_state> msg)
 {
 	__ENTER_FUNCTION_CHECK;
+	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
+	lcplayer->leave_table();
+
+	auto sendmsg = PACKET_CREATE(packetl2c_check_state_result, e_mst_l2c_check_state);
+	sendmsg->set_is_intable(lcplayer->is_inTable());
+	player->send_msg_to_client(sendmsg);
+	__LEAVE_FUNCTION_CHECK
+		return !EX_CHECK;
+}
+
+//出牌
+bool packetc2l_playhand_factory::packet_process(shared_ptr<peer_tcp> peer, shared_ptr<i_game_player> player, shared_ptr<packetc2l_playhand> msg)
+{
+	__ENTER_FUNCTION_CHECK;
+	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
+	e_server_error_code result=lcplayer->playhand(msg->cards());
+	auto sendmsg = PACKET_CREATE(packetl2c_playhand_result, e_mst_l2c_playhand);
+	sendmsg->set_result(result);
+	player->send_msg_to_client(sendmsg);
+
+	__LEAVE_FUNCTION_CHECK
+		return !EX_CHECK;
+}
+
+//抢地主
+bool packetc2l_rob_landlord_factory::packet_process(shared_ptr<peer_tcp> peer, shared_ptr<i_game_player> player, shared_ptr<packetc2l_rob_landlord> msg)
+{
+	__ENTER_FUNCTION_CHECK;
 
 	auto sendmsg = PACKET_CREATE(packetl2c_check_state_result, e_mst_l2c_check_state);
 	player->send_msg_to_client(sendmsg);
 
 	__LEAVE_FUNCTION_CHECK
 		return !EX_CHECK;
+
 }
 

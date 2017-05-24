@@ -13,7 +13,7 @@
 using namespace std;
 
 static const int MAX_TABLE_COUNT = 10000;
-static const int MAX_ROBOT_COUNT = 10;
+static const int MAX_ROBOT_COUNT = 20;
 
 logic_room::logic_room(const Landlord_RoomCFGData* cfg, logic_lobby* _lobby):robCount(0),createRob_time(0)
 {
@@ -113,7 +113,7 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 	logic_table* table = nullptr;
 	for (auto var : tableMap)
 	{
-		if (var.second->get_table_state()==TableState_Prepare)
+		if (var.second->get_table_State()==e_game_state::e_game_state_matching)
 		{
 			table= var.second.get();
 			break;
@@ -122,7 +122,7 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 
 	for (auto var : tableMap)
 	{
-		if (var.second->get_table_state() == TableState_None)
+		if (var.second->get_table_State() == e_game_state::e_game_state_none)
 		{
 			table = var.second.get();
 			break;

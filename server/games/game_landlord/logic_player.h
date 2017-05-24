@@ -5,6 +5,8 @@
 #include "proc_game_landlord_protocol.h"
 #include "i_game_player.h"
 
+using namespace game_landlord_protocol;
+
 class logic_lobby;
 class logic_player_db:public game_object
 {
@@ -59,8 +61,10 @@ public:
 	bool enter_room(logic_room* room);			//进入房间
 	void leave_table();							//离开桌子
 
+	e_server_error_code playhand(const game_landlord_protocol::card_Info& cards);// 出牌
+
 	logic_room* get_room(){return m_room;}
-	bool is_inTable() { m_table != nullptr; }
+	bool is_inTable() { return m_table != nullptr; }
 	e_player_state get_game_state();
 	void release();								//退出整个游戏客户端
 
@@ -89,4 +93,6 @@ private:
 
 	GOLD_TYPE m_logic_gold;
 	GOLD_TYPE m_change_gold;
+
+	e_player_game_state player_state;
 };

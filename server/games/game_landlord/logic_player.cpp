@@ -19,6 +19,7 @@ logic_player::logic_player(void)
 	, m_checksave(0.0)
 	, is_first_save(true)
 	,deskId(0)
+	,player_state(e_player_game_state::e_player_game_state_none)
 {
 	logic_player_db::init_game_object();
 }
@@ -239,6 +240,23 @@ void logic_player::leave_table()
 	{
 		logic_player_db::store_game_object();
 	}
+}
+
+//³öÅÆ
+e_server_error_code logic_player::playhand(const game_landlord_protocol::card_Info& cards)
+{
+	if (cards.deskid() != get_deskId())
+	{
+		return  e_server_error_code::e_error_code_failed;
+	}
+
+	bool result=m_table->check_playhand(cards);
+	if (result == false)
+	{
+		e_server_error_code::e_error_code_failed;
+	}
+	m_table->do_protobuf_notice_playhand(cards);
+	return e_server_error_code::e_error_code_success;
 }
 
 bool logic_player_db::load_player()
