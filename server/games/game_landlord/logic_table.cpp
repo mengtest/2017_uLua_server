@@ -11,7 +11,8 @@
 
 using namespace std;
 
-logic_table::logic_table(logic_room* room, int tableId):current_deskId(1), playhand_cdTime(0), sendcard_cdTime(0)
+logic_table::logic_table(logic_room* room, int tableId) :current_deskId(1), playhand_cdTime(0), sendcard_cdTime(0), roblandlord_cdTime(0)
+		,m_room(nullptr)
 {
 	deskCount = 3;
 	deskList.resize(deskCount);
@@ -59,7 +60,19 @@ void logic_table::heartbeat(double elapsed)
 	{
 		if (playerMap.size() >= deskCount)
 		{
-			gameState = e_game_state::e_game_state_startgame;
+			bool allPrepare = true;
+			for(auto& var: playerMap)
+			{
+				if (var.second->get_player_game_state() != e_player_game_state::e_player_game_state_matching)
+				{
+					allPrepare = false;
+					break;
+				}
+			}
+			if (allPrepare)
+			{
+				gameState = e_game_state::e_game_state_startgame;
+			}
 		}	
 	}
 	else if (gameState == e_game_state::e_game_state_startgame)//开始游戏，发完所有牌
@@ -71,7 +84,8 @@ void logic_table::heartbeat(double elapsed)
 	{
 		if (sendcard_cdTime > 15.0)
 		{
-			gameState == e_game_state::e_game_state_robLandlore;
+			gameState = e_game_state::e_game_state_robLandlore;
+			do_protobuf_notice_robLandlord();
 			sendcard_cdTime = 0;
 		}
 		else
@@ -81,8 +95,21 @@ void logic_table::heartbeat(double elapsed)
 	}
 	else if (gameState == e_game_state::e_game_state_robLandlore)//叫地主
 	{
-
-		
+		if (roblandlord_cdTime > 20.0)
+		{
+			for (auto& var : playerMap)
+			{
+				if (var.second->get_deskId() == current_robLandlord_Id)
+				{
+					rob_Landlord(var.second.get(),2);
+					break;
+				}
+			}
+			roblandlord_cdTime = 0.0;
+		}else
+		{
+			roblandlord_cdTime += elapsed;
+		}	
 	}
 	else if (gameState == e_game_state::e_game_state_playhand)//玩家出牌
 	{
@@ -98,8 +125,11 @@ void logic_table::heartbeat(double elapsed)
 	}
 	else if (gameState == e_game_state::e_game_state_award)//开奖
 	{
-		do_protobuf_notice_winlose();
-		gameState = e_game_state::e_game_state_matching;
+		gameState = e_game_state::e_game_state_none;
+		for (auto& var : playerMap)
+		{
+			var.second->set_player_game_state(e_player_game_state::e_player_game_state_none);
+		}
 	}
 }
 
@@ -125,6 +155,7 @@ e_server_error_code logic_table::enter_table(LPlayerPtr player)
 	{
 		return e_error_code_failed;
 	}
+	player->set_table(this);
 	player->set_deskId(current_deskId);
 	SLOG_CRITICAL << "进入桌子成功" << std::endl;
 	return e_error_code_success;
@@ -143,9 +174,7 @@ e_server_error_code logic_table::leave_table(uint32_t playerId)
 		return e_error_code_failed;
 	}
 	deskList[deskId -1] = 0;
-	it->second->set_deskId(0);
 	playerMap.erase(it);
-	m_room->leave_room(playerId);
 	return e_error_code_success;
 }
 
@@ -166,6 +195,43 @@ e_game_state logic_table::get_table_State()
 	return gameState;
 }
 
+bool logic_table::get_orFull()
+{
+	return playerMap.size() >= deskCount;
+}
+
+void logic_table::rob_Landlord(logic_player* player,int orRob)
+{
+	if (current_robLandlord_Id > deskCount)
+	{
+		current_robLandlord_Id = 0;
+	}
+
+	int landlord_id = m_cardManager->get_Landlord();
+	if (landlord_id>1 && current_robLandlord_Id == landlord_id - 1 || landlord_id == 1 && current_robLandlord_Id == deskCount)
+	{
+		gameState = e_game_state::e_game_state_playhand;
+	}
+	else
+	{
+		if (orRob == 2)
+		{
+			do_protobuf_notice_robLandlord();
+			current_robLandlord_Id++;
+		}
+		else if (orRob == 1)
+		{
+			gameState = e_game_state::e_game_state_playhand;
+		}
+	}
+
+	auto sendmsg = PACKET_CREATE(packetl2c_notice_rob_landlord_result, e_mst_l2c_notice_rob_landlord_result);
+	sendmsg->set_deskid(player->get_deskId());
+	sendmsg->set_or_rob(orRob);
+	broadcast_msg_to_client(sendmsg,player->get_pid());
+}
+
+
 bool logic_table::check_playhand(const game_landlord_protocol::card_Info& cards)
 {
 	if (cards.cards_size() == 0)
@@ -185,6 +251,12 @@ bool logic_table::check_playhand(const game_landlord_protocol::card_Info& cards)
 	}
 	else
 	{
+		m_cardManager->playhand(cards.deskid(),m_cards);
+		if (m_cardManager->get_cards_info(cards.deskid()).size() == 0)
+		{
+			do_protobuf_notice_winlose(cards.deskid());
+			gameState = e_game_state::e_game_state_award;
+		}
 		return true;
 	}
 }
@@ -194,6 +266,8 @@ void logic_table::do_protobuf_notice_start_game()//开始游戏
 	SLOG_CRITICAL << "开始游戏" << std::endl;
 
 	m_cardManager->send_card();
+	current_robLandlord_Id = m_cardManager->get_Landlord();
+
 	auto sendmsg = PACKET_CREATE(packetl2c_notice_startgame, e_mst_l2c_notice_startgame);
 
 	std::map<int, vector<int>> m_cards = m_cardManager->get_cards_info();
@@ -238,19 +312,25 @@ void logic_table::do_protobuf_notice_playhand(const game_landlord_protocol::card
 }
 void logic_table::do_protobuf_notice_robLandlord()//通知 某某抢地主
 {
-	auto sendmsg = PACKET_CREATE(packetl2c_notice_rob_landlord, e_mst_l2c_notice_rob_landlord);
-	broadcast_msg_to_client(sendmsg);
+	for (auto& var : playerMap)
+	{
+		if (!var.second->is_robot())
+		{
+			if (var.second->get_deskId() == current_robLandlord_Id)
+			{
+				auto sendmsg = PACKET_CREATE(packetl2c_notice_rob_landlord, e_mst_l2c_notice_rob_landlord);
+				var.second->send_msg_to_client(sendmsg);
+				break;
+			}
+		}
+	}
 }
-void logic_table::do_protobuf_notice_winlose()//通知 开奖
+void logic_table::do_protobuf_notice_winlose(int deskId)//通知 开奖
 {
 	auto sendmsg = PACKET_CREATE(packetl2c_notice_winlose, e_mst_l2c_notice_winlose);
+	sendmsg->set_win_deskid(deskId);
 	broadcast_msg_to_client(sendmsg);
 }
-
-
-
-
-
 
 void logic_table_db::create_table()
 {

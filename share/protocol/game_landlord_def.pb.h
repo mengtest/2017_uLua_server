@@ -41,16 +41,19 @@ enum e_server_msg_type {
   e_mst_c2l_leave_room = 10004,
   e_mst_c2l_rob_landlord = 10005,
   e_mst_c2l_playhand = 10006,
+  e_mst_c2l_start_match = 10007,
   e_mst_start_l2c = 15000,
   e_mst_l2c_enter_room = 15001,
   e_mst_l2c_get_room_scene_info = 15002,
   e_mst_l2c_check_state = 15003,
   e_mst_l2c_leave_room = 15004,
   e_mst_l2c_playhand = 15005,
+  e_mst_l2c_start_match_result = 15006,
   e_mst_l2c_notice_startgame = 15101,
   e_mst_l2c_notice_playhand = 15102,
   e_mst_l2c_notice_rob_landlord = 15103,
   e_mst_l2c_notice_winlose = 15104,
+  e_mst_l2c_notice_rob_landlord_result = 15105,
   e_mst_clend_index = 20000
 };
 bool e_server_msg_type_IsValid(int value);

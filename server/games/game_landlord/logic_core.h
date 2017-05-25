@@ -13,6 +13,7 @@ public:
 	int get_openCard() { return mOpenCard; }
 	int get_Landlord() { return landlord_id; }
 	int compare_card(std::vector<int> cards_1, std::vector<int> cards_2);
+	void playhand(int deskid,std::vector<int>& cards);
 private:
 	int rand(int min, int max);
 	int take_one_card();

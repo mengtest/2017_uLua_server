@@ -13,6 +13,9 @@ void init_proc_landlord_protocol();
 PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_enter_room, i_game_player);
 PACKET_REGEDIT_SEND(packetl2c_enter_room_result);
 
+PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_start_match, i_game_player);
+PACKET_REGEDIT_SEND(packetl2c_start_match_result);
+
 //离开战场
 PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_leave_room, i_game_player);
 PACKET_REGEDIT_SEND(packetl2c_leave_room_result);
@@ -41,4 +44,5 @@ PACKET_REGEDIT_SEND(packetl2c_notice_rob_landlord);
 //通知 胜负
 PACKET_REGEDIT_SEND(packetl2c_notice_winlose);
 
+PACKET_REGEDIT_SEND(packetl2c_notice_rob_landlord_result);
 

@@ -80,7 +80,6 @@ e_server_error_code logic_room::enter_room(LPlayerPtr player)
 	}
 	
 	playerMap.insert(std::make_pair(player->get_pid(), player));
-
 	return enter_table(player);
 }
 
@@ -99,7 +98,6 @@ e_server_error_code logic_room::leave_room(uint32_t playerid)
 	}
 
 	playerMap.erase(it);
-
 	return e_error_code_success;
 }
 
@@ -113,7 +111,7 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 	logic_table* table = nullptr;
 	for (auto var : tableMap)
 	{
-		if (var.second->get_table_State()==e_game_state::e_game_state_matching)
+		if (!var.second->get_orFull())
 		{
 			table= var.second.get();
 			break;

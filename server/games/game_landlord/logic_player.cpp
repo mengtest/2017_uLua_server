@@ -14,6 +14,7 @@
 logic_player::logic_player(void)
 	:m_lobby(nullptr)
 	, m_room(nullptr)
+	, m_table(nullptr)
 	, m_logic_gold(0)
 	, m_change_gold(0)
 	, m_checksave(0.0)
@@ -221,16 +222,47 @@ bool logic_player::enter_room(logic_room* room)
 	return true;
 }
 
-void logic_player::leave_table()
+bool logic_player::leave_room()
+{
+	if (m_table != nullptr)
+	{
+		m_table->leave_table(this->get_pid());
+		m_table = nullptr;
+		deskId = 0;
+	}
+
+	if (m_room != nullptr)
+	{
+		m_room->leave_room(getpid());
+		m_room = nullptr;
+	}
+	return true;
+}
+
+
+bool logic_player::enter_table()
+{
+	if (m_table != nullptr)
+	{
+		return false;
+	}
+
+	LPlayerPtr player(this);
+	m_room->enter_table(player);
+
+	return true;
+}
+
+bool logic_player::leave_table()
 {
 	if (m_table != nullptr)
 	{
 		m_table->leave_table(get_pid());
 		m_table = nullptr;
+		deskId = 0;
 	}
 
 	sycn_gold();
-
 	if (is_first_save)		//保存数据
 	{
 		logic_player_db::store_game_object(true);
@@ -240,6 +272,23 @@ void logic_player::leave_table()
 	{
 		logic_player_db::store_game_object();
 	}
+
+	return true;
+}
+
+void logic_player::start_match()// 抢地主
+{
+	player_state = e_player_game_state::e_player_game_state_matching;
+}
+
+int logic_player::get_wait_time()// 抢地主
+{
+	return 10;
+}
+
+void logic_player::robLandlord(int or_Rob)// 抢地主
+{
+	m_table->rob_Landlord(this,or_Rob);
 }
 
 //出牌

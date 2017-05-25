@@ -83,6 +83,28 @@ int logic_core::take_one_card()
 	return card;
 }
 
+void logic_core::playhand(int deskid,std::vector<int>& cards)
+{
+	std::vector<int>& m_desk_cards=m_cardMap[deskid];
+
+	auto var1 = cards.begin();
+	for (auto var : cards)
+	{
+		for (; var1 != cards.end();)
+		{
+			if (*var1 = var)
+			{
+				var1=m_desk_cards.erase(var1);
+				break;
+			}
+			else
+			{
+				var1++;
+			}
+		}
+	}
+}
+
 int logic_core::compare_card(std::vector<int> cards_1, std::vector<int> cards_2)
 {
 	std::vector<int> sort_cards_1 = cards_1;

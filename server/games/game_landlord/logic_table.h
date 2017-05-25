@@ -27,16 +27,18 @@ public:
 	e_server_error_code leave_table(uint32_t playerid);			//离开房间
 
 	int Find_DeskPos();
-	e_game_state logic_table::get_table_State();
+	e_game_state get_table_State();
+	bool get_orFull();
 	int getTablePlayerCount() { return playerMap.size(); }
 
 	bool check_playhand(const game_landlord_protocol::card_Info& cards);
+	void rob_Landlord(logic_player* player,int);
 
 	void do_protobuf_notice_playhand(const game_landlord_protocol::card_Info& cards);//通知 出牌
 private:
 	void do_protobuf_notice_start_game();//通知开始游戏
 	void do_protobuf_notice_robLandlord();//通知 某某抢地主
-	void do_protobuf_notice_winlose();//通知 开奖
+	void do_protobuf_notice_winlose(int deskId);//通知 开奖
 public:
 	template<class T>
 	int broadcast_msg_to_client(T msg, uint32_t except_id = 0)
@@ -62,6 +64,9 @@ private:
 
 	double playhand_cdTime;
 	double sendcard_cdTime;
+	double roblandlord_cdTime;
+
+	int32_t current_robLandlord_Id;//当前 抢地主ID
 
 	std::vector<int> lastPlayhand;//一个回合出牌
 	int32_t current_deskId;
