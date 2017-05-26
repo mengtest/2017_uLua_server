@@ -41,6 +41,11 @@ logic_room::~logic_room(void)
 
 void logic_room::heartbeat(double elapsed)
 {
+	for (auto& var : playerMap)
+	{
+		var.second->heartbeat(elapsed);
+	}
+
 	for (auto& var : tableMap)
 	{
 		var.second->heartbeat(elapsed);
@@ -80,7 +85,7 @@ e_server_error_code logic_room::enter_room(LPlayerPtr player)
 	}
 	
 	playerMap.insert(std::make_pair(player->get_pid(), player));
-	return enter_table(player);
+	return e_error_code_success;
 }
 
 e_server_error_code logic_room::leave_room(uint32_t playerid)
@@ -109,13 +114,27 @@ const Landlord_RoomCFGData* logic_room::get_room_cfg() const
 e_server_error_code logic_room::enter_table(LPlayerPtr player)
 {
 	logic_table* table = nullptr;
+
 	for (auto var : tableMap)
 	{
+
 		if (!var.second->get_orFull())
 		{
-			table= var.second.get();
+			if (player->is_robot() && var.second->check_ExistRealPlayer())
+			{
+				table = var.second.get();
+			}
+			else if (!player->is_robot())
+			{
+				table = var.second.get();
+			}
 			break;
 		}
+	}
+
+	if (table == nullptr && player->is_robot())
+	{
+		return e_error_code_failed;
 	}
 
 	for (auto var : tableMap)
@@ -127,7 +146,7 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 		}
 	}
 
-	if (tableMap.size() == MAX_TABLE_COUNT)
+	if (tableMap.size() >= MAX_TABLE_COUNT)
 	{
 		return e_error_code_failed;
 	}
@@ -145,7 +164,6 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 					break;
 				}
 			}
-
 		}
 		for (auto& v : tableIdList)
 		{
@@ -157,6 +175,31 @@ e_server_error_code logic_room::enter_table(LPlayerPtr player)
 	}
 
 	e_server_error_code code= table->enter_table(player);
+	return code;
+}
+
+LTablePtr  logic_room::rob_find_realplayer_table()
+{
+	logic_table* table = nullptr;
+	for (auto var : tableMap)
+	{
+		if (!var.second->get_orFull())
+		{
+			if (var.second->check_ExistRealPlayer())
+			{
+				return var.second;
+			}			
+			break;
+		}
+	}
+	boost::shared_ptr<logic_table> ptr;
+	return ptr;
+}
+
+
+e_server_error_code logic_room::rob_enter_table(LPlayerPtr player,LTablePtr table)
+{
+	e_server_error_code code = table->enter_table(player);
 	return code;
 }
 

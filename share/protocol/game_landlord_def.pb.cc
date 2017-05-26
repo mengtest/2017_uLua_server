@@ -89,12 +89,15 @@ void protobuf_AddDesc_game_5flandlord_5fdef_2eproto() {
     "state_startgame\020\002\022\034\n\030e_game_state_sendca"
     "rding\020\003\022\034\n\030e_game_state_robLandlore\020\004\022\031\n"
     "\025e_game_state_playhand\020\005\022\026\n\022e_game_state"
-    "_award\020\006*\303\001\n\023e_player_game_state\022\034\n\030e_pl"
+    "_award\020\006*\274\002\n\023e_player_game_state\022\034\n\030e_pl"
     "ayer_game_state_none\020\000\022 \n\034e_player_game_"
     "state_matching\020\001\022#\n\037e_player_game_state_"
-    "playhanding\020\002\022(\n$e_player_game_state_wai"
-    "t_playhanding\020\003\022\035\n\031e_player_game_state_a"
-    "ward\020\004", 1206);
+    "sendcarding\020\002\022#\n\037e_player_game_state_rob"
+    "Landlord\020\003\022)\n%e_player_game_state_other_"
+    "robLandlord\020\004\022#\n\037e_player_game_state_pla"
+    "yhanding\020\005\022)\n%e_player_game_state_other_"
+    "playhanding\020\006\022 \n\034e_player_game_state_awa"
+    "rding\020\007", 1327);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "game_landlord_def.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_game_5flandlord_5fdef_2eproto);
@@ -184,6 +187,9 @@ bool e_player_game_state_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
+    case 6:
+    case 7:
       return true;
     default:
       return false;

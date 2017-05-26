@@ -59,11 +59,11 @@ public:
 
 	void enter_game(logic_lobby* lobby);		//进入游戏
 
-	bool enter_room(logic_room* room);			//进入房间
-	bool leave_room();
-	bool enter_table();
-	bool leave_table();							//离开桌子
-	void start_match();
+	e_server_error_code enter_room(logic_room* room);			//进入房间
+	e_server_error_code leave_room();
+	e_server_error_code enter_table();
+	e_server_error_code leave_table();							//离开桌子
+	e_server_error_code start_match();
 	int get_wait_time();
 
 	void robLandlord(int);// 抢地主
@@ -71,6 +71,7 @@ public:
 
 	logic_room* get_room(){return m_room;}
 	bool is_inTable() { return m_table != nullptr; }
+	bool is_inRoom() { return m_room != nullptr; }
 	e_player_state get_game_state();
 	e_player_game_state get_player_game_state() { return player_state; }
 	void set_player_game_state(e_player_game_state state) { player_state = state; }
@@ -103,4 +104,6 @@ private:
 	GOLD_TYPE m_change_gold;
 
 	e_player_game_state player_state;
+
+	double rob_match_cd;
 };

@@ -31,6 +31,8 @@ public:
 	e_server_error_code leave_room(uint32_t playerid);			//Àë¿ª·¿¼ä
 
     e_server_error_code enter_table(LPlayerPtr player);
+	e_server_error_code rob_enter_table(LPlayerPtr player, LTablePtr table);
+	LTablePtr rob_find_realplayer_table();
 
 	const Landlord_RoomCFGData* get_room_cfg() const;
 	logic_lobby* get_lobby(){return m_lobby;};

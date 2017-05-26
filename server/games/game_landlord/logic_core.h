@@ -12,6 +12,7 @@ public:
 
 	int get_openCard() { return mOpenCard; }
 	int get_Landlord() { return landlord_id; }
+	const std::vector<int>& get_RemainLandlordCards() { return m_RemainlandlordCards; }
 	int compare_card(std::vector<int> cards_1, std::vector<int> cards_2);
 	void playhand(int deskid,std::vector<int>& cards);
 private:
@@ -44,5 +45,6 @@ private:
 	int deskCount;//这个桌子有几个人在打
 	int mOpenCard;//取牌前，翻牌确定谁先取牌
 	std::map<int, std::vector<int>> m_cardMap;
+	std::vector<int> m_RemainlandlordCards;//剩下的3张牌
 	int landlord_id;
 };

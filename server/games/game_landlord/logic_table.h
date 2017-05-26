@@ -29,6 +29,7 @@ public:
 	int Find_DeskPos();
 	e_game_state get_table_State();
 	bool get_orFull();
+	bool check_ExistRealPlayer();
 	int getTablePlayerCount() { return playerMap.size(); }
 
 	bool check_playhand(const game_landlord_protocol::card_Info& cards);
@@ -38,6 +39,7 @@ public:
 private:
 	void do_protobuf_notice_start_game();//通知开始游戏
 	void do_protobuf_notice_robLandlord();//通知 某某抢地主
+	void do_protobuf_notice_robLandlord_result(logic_player* player, int orRob);//通知其他人抢地主的结果
 	void do_protobuf_notice_winlose(int deskId);//通知 开奖
 public:
 	template<class T>
@@ -46,7 +48,7 @@ public:
 		std::vector<uint32_t> pids;
 		for (auto it=playerMap.begin(); it != playerMap.end(); it++)
 		{
-			if (!it->second->is_inTable() && it->second->get_pid() != except_id && !it->second->is_robot())
+			if (it->second->is_inTable() && it->second->get_pid() != except_id && !it->second->is_robot())
 			{
 				pids.push_back(it->second->get_pid());
 			}
@@ -54,7 +56,7 @@ public:
 		return game_engine::instance().get_handler()->broadcast_msg_to_client(pids, msg->packet_id(), msg);
 	}
 private:
-	std::map<int, LPlayerPtr> playerMap;		//凳子是key,所有玩家字典
+	std::map<int32_t, LPlayerPtr> playerMap;
 	std::vector<int> deskList;
 	int32_t m_tableId;
 	e_game_state gameState;
@@ -71,4 +73,7 @@ private:
 	std::vector<int> lastPlayhand;//一个回合出牌
 	int32_t current_deskId;
 
+
+	int robCount;
+	double createRob_time;
 };

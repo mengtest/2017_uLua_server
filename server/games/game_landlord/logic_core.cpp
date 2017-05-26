@@ -69,6 +69,8 @@ void logic_core::send_card()
 			i = 1;
 		}
 	}
+
+	m_RemainlandlordCards = m_cards;
 }
 
 int logic_core::rand(int min, int max)

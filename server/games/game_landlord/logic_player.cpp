@@ -21,6 +21,7 @@ logic_player::logic_player(void)
 	, is_first_save(true)
 	,deskId(0)
 	,player_state(e_player_game_state::e_player_game_state_none)
+	,rob_match_cd(0)
 {
 	logic_player_db::init_game_object();
 }
@@ -55,7 +56,7 @@ void logic_player::on_attribute64_change(int atype, GOLD_TYPE v)
 //-----------------------------------------------------------------
 
 
-void logic_player::heartbeat( double elapsed )
+void logic_player::heartbeat(double elapsed)
 {
 	m_checksave += elapsed;
 	if (m_checksave > 30)
@@ -73,16 +74,61 @@ void logic_player::heartbeat( double elapsed )
 	}
 
 	if (m_room == nullptr)
+	{
 		return;
+	}
 
 	if (is_robot())//机器人AI
 	{
-		if (m_room == nullptr)
+		if (player_state == e_player_game_state::e_player_game_state_none)
+		{
+			if (rob_match_cd > 5)
+			{
+				LTablePtr table=m_room->rob_find_realplayer_table();
+				if (table.get() != nullptr)
+				{
+					LPlayerPtr player = game_engine::instance().get_lobby().get_player(this->get_pid());
+					if (player != logic_player::EmptyPtr)
+					{
+						e_server_error_code result= m_room->rob_enter_table(player, table);
+						if (result == e_server_error_code::e_error_code_success)
+						{
+							player_state = e_player_game_state::e_player_game_state_matching;
+						}
+					}
+				}
+				rob_match_cd = 0;
+			}
+			else
+			{
+				rob_match_cd += elapsed;
+			}
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_matching)
+		{
+			
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_sendcarding)
 		{
 
 		}
+		else if (player_state == e_player_game_state::e_player_game_state_robLandlord)
+		{
 
-		if (m_table == nullptr)
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_other_robLandlord)
+		{
+
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_playhanding)
+		{
+			
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_other_playhanding)
+		{
+
+		}
+		else if (player_state == e_player_game_state::e_player_game_state_awarding)
 		{
 
 		}
@@ -211,55 +257,38 @@ void logic_player::enter_game(logic_lobby* lobby)
 	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);
 }
 
-bool logic_player::enter_room(logic_room* room)
+e_server_error_code logic_player::enter_room(logic_room* room)
 {
 	if (m_room != nullptr || room == nullptr)
-		return false;
+	{
+		return e_server_error_code::e_error_code_failed;
+	}
 
 	m_room = room;
 	m_logic_gold = m_player->get_attribute64(msg_type_def::e_itd_gold);
-
-	return true;
+	player_state = e_player_game_state::e_player_game_state_none;
+	return e_server_error_code::e_error_code_success;
 }
 
-bool logic_player::leave_room()
+e_server_error_code logic_player::leave_room()
 {
-	if (m_table != nullptr)
+	e_server_error_code result_ta= leave_table();
+	if (result_ta !=e_server_error_code::e_error_code_success)
 	{
-		m_table->leave_table(this->get_pid());
-		m_table = nullptr;
-		deskId = 0;
+		return result_ta;
 	}
 
 	if (m_room != nullptr)
 	{
-		m_room->leave_room(getpid());
-		m_room = nullptr;
-	}
-	return true;
-}
-
-
-bool logic_player::enter_table()
-{
-	if (m_table != nullptr)
-	{
-		return false;
-	}
-
-	LPlayerPtr player(this);
-	m_room->enter_table(player);
-
-	return true;
-}
-
-bool logic_player::leave_table()
-{
-	if (m_table != nullptr)
-	{
-		m_table->leave_table(get_pid());
-		m_table = nullptr;
-		deskId = 0;
+		e_server_error_code result_ro=m_room->leave_room(this->get_pid());
+		if (result_ro == e_server_error_code::e_error_code_success)
+		{
+			m_room = nullptr;
+		}
+		else
+		{
+			return e_server_error_code::e_error_code_failed;
+		}
 	}
 
 	sycn_gold();
@@ -272,13 +301,59 @@ bool logic_player::leave_table()
 	{
 		logic_player_db::store_game_object();
 	}
-
-	return true;
+	return e_server_error_code::e_error_code_success;
 }
 
-void logic_player::start_match()// 抢地主
+
+e_server_error_code logic_player::enter_table()
 {
-	player_state = e_player_game_state::e_player_game_state_matching;
+	if (m_table != nullptr)
+	{
+		return e_server_error_code::e_error_code_failed;
+	}
+
+	LPlayerPtr player = game_engine::instance().get_lobby().get_player(this->get_pid());
+	if (player == logic_player::EmptyPtr)
+	{
+		return e_server_error_code::e_error_code_failed;
+	}
+	e_server_error_code result=m_room->enter_table(player);
+	return result;
+}
+
+e_server_error_code logic_player::leave_table()
+{
+	if (m_table != nullptr)
+	{
+		e_server_error_code result=m_table->leave_table(get_pid());
+		if (result == e_server_error_code::e_error_code_success)
+		{
+			m_table = nullptr;
+			deskId = 0;
+			player_state = e_player_game_state::e_player_game_state_none;
+		}
+		return result;
+	}
+	else
+	{
+		return e_server_error_code::e_error_code_success;
+	}
+}
+
+
+e_server_error_code logic_player::start_match()// 抢地主
+{
+	e_server_error_code result=enter_table();
+	if (result == e_server_error_code::e_error_code_success)
+	{
+		player_state = e_player_game_state::e_player_game_state_matching;
+	}
+	else
+	{
+		SLOG_CRITICAL << "匹配失败";
+	}
+
+	return result;
 }
 
 int logic_player::get_wait_time()// 抢地主

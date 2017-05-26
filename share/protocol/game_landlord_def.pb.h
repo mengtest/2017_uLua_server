@@ -118,13 +118,16 @@ inline bool e_game_state_Parse(
 enum e_player_game_state {
   e_player_game_state_none = 0,
   e_player_game_state_matching = 1,
-  e_player_game_state_playhanding = 2,
-  e_player_game_state_wait_playhanding = 3,
-  e_player_game_state_award = 4
+  e_player_game_state_sendcarding = 2,
+  e_player_game_state_robLandlord = 3,
+  e_player_game_state_other_robLandlord = 4,
+  e_player_game_state_playhanding = 5,
+  e_player_game_state_other_playhanding = 6,
+  e_player_game_state_awarding = 7
 };
 bool e_player_game_state_IsValid(int value);
 const e_player_game_state e_player_game_state_MIN = e_player_game_state_none;
-const e_player_game_state e_player_game_state_MAX = e_player_game_state_award;
+const e_player_game_state e_player_game_state_MAX = e_player_game_state_awarding;
 const int e_player_game_state_ARRAYSIZE = e_player_game_state_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* e_player_game_state_descriptor();

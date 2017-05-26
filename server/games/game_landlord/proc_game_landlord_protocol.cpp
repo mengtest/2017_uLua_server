@@ -58,10 +58,14 @@ bool packetc2l_start_match_factory::packet_process(shared_ptr<peer_tcp> peer, sh
 {
 	__ENTER_FUNCTION_CHECK;
 	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
-	lcplayer->start_match();
+	e_server_error_code result= lcplayer->start_match();
 
 	auto sendmsg = PACKET_CREATE(packetl2c_start_match_result, e_mst_l2c_start_match_result);
-	sendmsg->set_wait_time(lcplayer->get_wait_time());
+	sendmsg->set_result(result);
+	if (result == e_server_error_code::e_error_code_success)
+	{
+		sendmsg->set_wait_time(lcplayer->get_wait_time());
+	}
 	lcplayer->send_msg_to_client(sendmsg);
 
 	__LEAVE_FUNCTION_CHECK
@@ -74,9 +78,10 @@ bool packetc2l_leave_room_factory::packet_process(shared_ptr<peer_tcp> peer, sha
 	__ENTER_FUNCTION_CHECK;
 
 	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
-	lcplayer->leave_room();
+	e_server_error_code result=lcplayer->leave_room();
+
 	auto sendmsg = PACKET_CREATE(packetl2c_leave_room_result, e_mst_l2c_leave_room);
-	sendmsg->set_result(e_error_code_success);
+	sendmsg->set_result(result);
 	player->send_msg_to_client(sendmsg);
 
 	__LEAVE_FUNCTION_CHECK
@@ -101,7 +106,7 @@ bool packetc2l_check_state_factory::packet_process(shared_ptr<peer_tcp> peer, sh
 	__ENTER_FUNCTION_CHECK;
 	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
 	auto sendmsg = PACKET_CREATE(packetl2c_check_state_result, e_mst_l2c_check_state);
-	sendmsg->set_is_intable(lcplayer->is_inTable());
+	sendmsg->set_is_intable(lcplayer->is_inRoom());
 	player->send_msg_to_client(sendmsg);
 	__LEAVE_FUNCTION_CHECK
 		return !EX_CHECK;
@@ -113,6 +118,7 @@ bool packetc2l_playhand_factory::packet_process(shared_ptr<peer_tcp> peer, share
 	__ENTER_FUNCTION_CHECK;
 	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
 	e_server_error_code result=lcplayer->playhand(msg->cards());
+
 	auto sendmsg = PACKET_CREATE(packetl2c_playhand_result, e_mst_l2c_playhand);
 	sendmsg->set_result(result);
 	player->send_msg_to_client(sendmsg);

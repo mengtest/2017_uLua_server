@@ -12,7 +12,9 @@
 using namespace std;
 
 logic_table::logic_table(logic_room* room, int tableId) :current_deskId(1), playhand_cdTime(0), sendcard_cdTime(0), roblandlord_cdTime(0)
-		,m_room(nullptr)
+	,m_room(nullptr)
+	,robCount(0)
+	,createRob_time(0)
 {
 	deskCount = 3;
 	deskList.resize(deskCount);
@@ -63,7 +65,15 @@ void logic_table::heartbeat(double elapsed)
 			bool allPrepare = true;
 			for(auto& var: playerMap)
 			{
-				if (var.second->get_player_game_state() != e_player_game_state::e_player_game_state_matching)
+				if (var.second->get_deskId() > 0 && var.second->get_deskId() <= deskCount)
+				{
+					if (var.second->get_player_game_state() != e_player_game_state::e_player_game_state_matching)
+					{
+						allPrepare = false;
+						break;
+					}
+				}
+				else
 				{
 					allPrepare = false;
 					break;
@@ -131,6 +141,16 @@ void logic_table::heartbeat(double elapsed)
 			var.second->set_player_game_state(e_player_game_state::e_player_game_state_none);
 		}
 	}
+
+	/*if (robCount < deskCount - 1)
+	{
+		if (createRob_time > 1.0)
+		{
+			game_engine::instance().request_robot(m_room->get_room_id()*1000+get_table_id(), global_random::instance().rand_int(10000, 100000), global_random::instance().rand_int(0, 3));
+			createRob_time = 0.0;
+		}
+		createRob_time += elapsed;
+	}*/
 }
 
 uint16_t logic_table::get_table_id()
@@ -138,25 +158,41 @@ uint16_t logic_table::get_table_id()
 	return m_tableId;
 }
 
+bool logic_table::check_ExistRealPlayer()
+{
+	for (auto& var : playerMap)
+	{
+		if (!var.second->is_robot())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 e_server_error_code logic_table::enter_table(LPlayerPtr player)
 {
-	if (playerMap.size() >= 3)
+	if (get_orFull())
 	{
+		SLOG_CRITICAL << "桌子满了";
 		return e_error_code_failed;
 	}
 	auto it = playerMap.find(player->get_pid());
 	if (it != playerMap.end())
 	{
+		SLOG_CRITICAL << "玩家已经在桌子里了";
 		return e_error_code_success;
 	}
 	playerMap.insert(make_pair(player->get_pid(),player));
-	int desk=Find_DeskPos();
-	if (desk<=0)
+	int deskId=Find_DeskPos();
+	if (deskId<=0)
 	{
+		SLOG_CRITICAL << "没有找到凳子";
 		return e_error_code_failed;
 	}
+	deskList[deskId - 1] = 1;
 	player->set_table(this);
-	player->set_deskId(current_deskId);
+	player->set_deskId(deskId);
 	SLOG_CRITICAL << "进入桌子成功" << std::endl;
 	return e_error_code_success;
 }
@@ -216,19 +252,16 @@ void logic_table::rob_Landlord(logic_player* player,int orRob)
 	{
 		if (orRob == 2)
 		{
+			do_protobuf_notice_robLandlord_result(player, orRob);
 			do_protobuf_notice_robLandlord();
 			current_robLandlord_Id++;
 		}
 		else if (orRob == 1)
 		{
+			do_protobuf_notice_robLandlord_result(player, orRob);
 			gameState = e_game_state::e_game_state_playhand;
 		}
 	}
-
-	auto sendmsg = PACKET_CREATE(packetl2c_notice_rob_landlord_result, e_mst_l2c_notice_rob_landlord_result);
-	sendmsg->set_deskid(player->get_deskId());
-	sendmsg->set_or_rob(orRob);
-	broadcast_msg_to_client(sendmsg,player->get_pid());
 }
 
 
@@ -269,20 +302,14 @@ void logic_table::do_protobuf_notice_start_game()//开始游戏
 	current_robLandlord_Id = m_cardManager->get_Landlord();
 
 	auto sendmsg = PACKET_CREATE(packetl2c_notice_startgame, e_mst_l2c_notice_startgame);
-
-	std::map<int, vector<int>> m_cards = m_cardManager->get_cards_info();
-	for (auto& var : m_cards)
-	{
-		auto cards=sendmsg->add_cards();
-		cards->set_deskid(var.first);
-		for (auto& var1 : var.second)
-		{
-			cards->add_cards(var1);
-		}
-	}
-
 	int openCard=m_cardManager->get_openCard();
 	sendmsg->set_opencard(openCard);
+
+	const std::vector<int>& m_remainLandlord_cards = m_cardManager->get_RemainLandlordCards();
+	for (auto& var : m_remainLandlord_cards)
+	{
+		sendmsg->add_cards_1(var);
+	}
 
 	for (auto& var : playerMap)
 	{
@@ -299,10 +326,20 @@ void logic_table::do_protobuf_notice_start_game()//开始游戏
 	int landlord_deskId = m_cardManager->get_Landlord();
 	sendmsg->set_landlord_id(landlord_deskId);
 
-	broadcast_msg_to_client(sendmsg);	
+	std::map<int, vector<int>>& m_cards = m_cardManager->get_cards_info();
+	for (auto& var : playerMap)
+	{
+		sendmsg->clear_cards();
+		std::vector<int>& m_cards = m_cardManager->get_cards_info(var.second->get_deskId());
+		for (auto& var1 : m_cards)
+		{
+			sendmsg->add_cards(var1);
+		}
+		var.second->send_msg_to_client(sendmsg);
+	}	
 }
 
-void logic_table::do_protobuf_notice_playhand(const game_landlord_protocol::card_Info& cards)//通知 出牌信息
+void logic_table::do_protobuf_notice_playhand(const game_landlord_protocol::card_Info& cards)//通知  出牌信息
 {
 	auto sendmsg = PACKET_CREATE(packetl2c_notice_playhand, e_mst_l2c_notice_playhand);
 	sendmsg->mutable_cards()->CopyFrom(cards);
@@ -325,6 +362,15 @@ void logic_table::do_protobuf_notice_robLandlord()//通知 某某抢地主
 		}
 	}
 }
+
+void logic_table::do_protobuf_notice_robLandlord_result(logic_player* player,int orRob)//通知 其他人抢地主的结果
+{
+	auto sendmsg = PACKET_CREATE(packetl2c_notice_rob_landlord_result, e_mst_l2c_notice_rob_landlord_result);
+	sendmsg->set_deskid(player->get_deskId());
+	sendmsg->set_or_rob(orRob);
+	broadcast_msg_to_client(sendmsg, player->get_pid());
+}
+
 void logic_table::do_protobuf_notice_winlose(int deskId)//通知 开奖
 {
 	auto sendmsg = PACKET_CREATE(packetl2c_notice_winlose, e_mst_l2c_notice_winlose);
