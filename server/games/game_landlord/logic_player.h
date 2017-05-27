@@ -66,7 +66,7 @@ public:
 	e_server_error_code start_match();
 	int get_wait_time();
 
-	void robLandlord(int);// 抢地主
+	e_server_error_code robLandlord(int);// 抢地主
 	e_server_error_code playhand(const game_landlord_protocol::card_Info& cards);// 出牌
 
 	logic_room* get_room(){return m_room;}
@@ -104,6 +104,7 @@ private:
 	GOLD_TYPE m_change_gold;
 
 	e_player_game_state player_state;
+	e_player_state m_player_online_state;
 
 	double rob_match_cd;
 };

@@ -34,9 +34,12 @@ PACKET_REGEDIT_SEND(packetl2c_playhand_result);
 
 //抢地主
 PACKET_REGEDIT_RECVGATE_LOG(peer_tcp, packetc2l_rob_landlord, i_game_player);
+PACKET_REGEDIT_SEND(packetl2c_rob_landlord_result);
 
 //通知开始游戏
 PACKET_REGEDIT_SEND(packetl2c_notice_startgame);
+//通知 某某人 出牌信息
+PACKET_REGEDIT_SEND(packetl2c_notice_who_playhand);
 //通知 其他人出牌信息
 PACKET_REGEDIT_SEND(packetl2c_notice_playhand);
 //通知 是否你要抢地主

@@ -24,9 +24,12 @@ void init_proc_landlord_protocol()
 
 	packetc2l_playhand_factory::regedit_factory();
 	packetl2c_playhand_result_factory::regedit_factory();
+
 	packetc2l_rob_landlord_factory::regedit_factory();
+	packetl2c_rob_landlord_result_factory::regedit_factory();
 
 	packetl2c_notice_startgame_factory::regedit_factory();
+	packetl2c_notice_who_playhand_factory::regedit_factory();
 	packetl2c_notice_playhand_factory::regedit_factory();
 	packetl2c_notice_rob_landlord_factory::regedit_factory();
 	packetl2c_notice_winlose_factory::regedit_factory();
@@ -121,6 +124,10 @@ bool packetc2l_playhand_factory::packet_process(shared_ptr<peer_tcp> peer, share
 
 	auto sendmsg = PACKET_CREATE(packetl2c_playhand_result, e_mst_l2c_playhand);
 	sendmsg->set_result(result);
+	if (result == e_server_error_code::e_error_code_success)
+	{
+		sendmsg->mutable_cards()->CopyFrom(msg->cards());
+	}
 	player->send_msg_to_client(sendmsg);
 
 	__LEAVE_FUNCTION_CHECK
@@ -133,7 +140,16 @@ bool packetc2l_rob_landlord_factory::packet_process(shared_ptr<peer_tcp> peer, s
 	__ENTER_FUNCTION_CHECK;
 
 	auto lcplayer = CONVERT_POINT(logic_player, player->get_handler());
-	lcplayer->robLandlord(msg->or_rob());
+	e_server_error_code result=lcplayer->robLandlord(msg->or_rob());
+
+	auto sendmsg = PACKET_CREATE(packetl2c_rob_landlord_result, e_mst_l2c_rob_landlord_result);
+	sendmsg->set_result(result);
+	if (result == e_server_error_code::e_error_code_success)
+	{
+		sendmsg->set_or_rob(msg->or_rob());
+	}
+	player->send_msg_to_client(sendmsg);
+
 
 	__LEAVE_FUNCTION_CHECK
 		return !EX_CHECK;

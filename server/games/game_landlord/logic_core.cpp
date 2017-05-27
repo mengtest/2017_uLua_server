@@ -16,6 +16,7 @@ logic_core::logic_core(int deskCount)
 void logic_core::init()
 {
 	m_cards.clear();
+	m_cardMap.clear();
 	for (int i = 3; i <= 15; i++)
 	{
 		m_cards.push_back(i * 100 + 1);
@@ -26,7 +27,7 @@ void logic_core::init()
 	m_cards.push_back(16 * 100);
 	m_cards.push_back(17 * 100);
 
-	assert(m_cards.size()==54);
+	assert(m_cards.size()==CARDS_COUNT);
 
 	srand(time(NULL));
 	std::random_shuffle(m_cards.begin(), m_cards.end(), [](int x) { return std::rand() % x; });//Ï´ÏÂÅÆ
@@ -70,6 +71,7 @@ void logic_core::send_card()
 		}
 	}
 
+	assert(landlord_id>=1 && landlord_id<=deskCount);
 	m_RemainlandlordCards = m_cards;
 }
 
@@ -119,18 +121,26 @@ int logic_core::compare_card(std::vector<int> cards_1, std::vector<int> cards_2)
 	int type2 = GetPaiType(sort_cards_2);
 	if (type1!=type2)
 	{
-		if (type1 != 1 && type1 != 2)
+		if (type1 != 1 && (type1 != 2 || cards_1.size()!=4))
+		{
+			return -1;
+		}
+		else if (type1 == 1)
+		{
+			return 1;
+		}
+		else if(type2==1)
 		{
 			return -1;
 		}
 	}
-	else if(cards_1.size() != cards_2.size())
+	else if(sort_cards_1.size() != sort_cards_2.size())
 	{
 		return -1;
 	}
 
-	int point1=getPoint(type1,cards_1);
-	int point2 = getPoint(type2,cards_2);	
+	int point1=getPoint(type1,sort_cards_1);
+	int point2 = getPoint(type2,sort_cards_2);	
 
 	if (point1 > point2)
 	{
@@ -140,6 +150,8 @@ int logic_core::compare_card(std::vector<int> cards_1, std::vector<int> cards_2)
 	{
 		return -1;
 	}
+	
+	assert(false);
 	return 0;
 }
 
@@ -192,7 +204,7 @@ int logic_core::GetPaiType(std::vector<int> sort_cards)
 	{
 		return 1;
 	}
-	else if (IS_ZHADAN(sort_cards))
+	else if (IS_SIZHANGPAI(sort_cards))
 	{
 		return 2;
 	}
@@ -246,7 +258,7 @@ bool logic_core::IS_SHUANGFEI(std::vector<int> cards)
 }
 
 //ËÄÕÅÅÆ
-bool logic_core::IS_ZHADAN(std::vector<int> cards)
+bool logic_core::IS_SIZHANGPAI(std::vector<int> cards)
 {
 	if (cards.size() >= 4 && cards.size()<=6)
 	{

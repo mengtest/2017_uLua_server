@@ -65,7 +65,7 @@ void protobuf_AddDesc_game_5flandlord_5fdef_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\027game_landlord_def.proto\022\026game_landlord"
-    "_protocol*\201\005\n\021e_server_msg_type\022\024\n\017e_mst"
+    "_protocol*\311\005\n\021e_server_msg_type\022\024\n\017e_mst"
     "_start_c2l\020\220N\022\031\n\024e_mst_c2l_enter_room\020\221N"
     "\022\"\n\035e_mst_c2l_get_room_scene_info\020\222N\022\032\n\025"
     "e_mst_c2l_check_state\020\223N\022\031\n\024e_mst_c2l_le"
@@ -76,28 +76,29 @@ void protobuf_AddDesc_game_5flandlord_5fdef_2eproto() {
     "room_scene_info\020\232u\022\032\n\025e_mst_l2c_check_st"
     "ate\020\233u\022\031\n\024e_mst_l2c_leave_room\020\234u\022\027\n\022e_m"
     "st_l2c_playhand\020\235u\022!\n\034e_mst_l2c_start_ma"
-    "tch_result\020\236u\022\037\n\032e_mst_l2c_notice_startg"
-    "ame\020\375u\022\036\n\031e_mst_l2c_notice_playhand\020\376u\022\""
-    "\n\035e_mst_l2c_notice_rob_landlord\020\377u\022\035\n\030e_"
-    "mst_l2c_notice_winlose\020\200v\022)\n$e_mst_l2c_n"
-    "otice_rob_landlord_result\020\201v\022\027\n\021e_mst_cl"
-    "end_index\020\240\234\001*k\n\023e_server_error_code\022\030\n\024"
-    "e_error_code_success\020\001\022\027\n\023e_error_code_f"
-    "ailed\020\002\022!\n\035e_error_code_not_enough_money"
-    "\020\003*\313\001\n\014e_game_state\022\025\n\021e_game_state_none"
-    "\020\000\022\031\n\025e_game_state_matching\020\001\022\032\n\026e_game_"
-    "state_startgame\020\002\022\034\n\030e_game_state_sendca"
-    "rding\020\003\022\034\n\030e_game_state_robLandlore\020\004\022\031\n"
-    "\025e_game_state_playhand\020\005\022\026\n\022e_game_state"
-    "_award\020\006*\274\002\n\023e_player_game_state\022\034\n\030e_pl"
-    "ayer_game_state_none\020\000\022 \n\034e_player_game_"
-    "state_matching\020\001\022#\n\037e_player_game_state_"
-    "sendcarding\020\002\022#\n\037e_player_game_state_rob"
-    "Landlord\020\003\022)\n%e_player_game_state_other_"
-    "robLandlord\020\004\022#\n\037e_player_game_state_pla"
-    "yhanding\020\005\022)\n%e_player_game_state_other_"
-    "playhanding\020\006\022 \n\034e_player_game_state_awa"
-    "rding\020\007", 1327);
+    "tch_result\020\236u\022\"\n\035e_mst_l2c_rob_landlord_"
+    "result\020\237u\022\037\n\032e_mst_l2c_notice_startgame\020"
+    "\375u\022\036\n\031e_mst_l2c_notice_playhand\020\376u\022\"\n\035e_"
+    "mst_l2c_notice_rob_landlord\020\377u\022\035\n\030e_mst_"
+    "l2c_notice_winlose\020\200v\022)\n$e_mst_l2c_notic"
+    "e_rob_landlord_result\020\201v\022\"\n\035e_mst_l2c_no"
+    "tice_who_playhand\020\202v\022\027\n\021e_mst_clend_inde"
+    "x\020\240\234\001*k\n\023e_server_error_code\022\030\n\024e_error_"
+    "code_success\020\001\022\027\n\023e_error_code_failed\020\002\022"
+    "!\n\035e_error_code_not_enough_money\020\003*\313\001\n\014e"
+    "_game_state\022\025\n\021e_game_state_none\020\000\022\031\n\025e_"
+    "game_state_matching\020\001\022\032\n\026e_game_state_st"
+    "artgame\020\002\022\034\n\030e_game_state_sendcarding\020\003\022"
+    "\034\n\030e_game_state_robLandlore\020\004\022\031\n\025e_game_"
+    "state_playhand\020\005\022\026\n\022e_game_state_award\020\006"
+    "*\274\002\n\023e_player_game_state\022\034\n\030e_player_gam"
+    "e_state_none\020\000\022 \n\034e_player_game_state_ma"
+    "tching\020\001\022#\n\037e_player_game_state_sendcard"
+    "ing\020\002\022#\n\037e_player_game_state_robLandlord"
+    "\020\003\022)\n%e_player_game_state_other_robLandl"
+    "ord\020\004\022#\n\037e_player_game_state_playhanding"
+    "\020\005\022)\n%e_player_game_state_other_playhand"
+    "ing\020\006\022 \n\034e_player_game_state_awarding\020\007", 1399);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "game_landlord_def.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_game_5flandlord_5fdef_2eproto);
@@ -130,11 +131,13 @@ bool e_server_msg_type_IsValid(int value) {
     case 15004:
     case 15005:
     case 15006:
+    case 15007:
     case 15101:
     case 15102:
     case 15103:
     case 15104:
     case 15105:
+    case 15106:
     case 20000:
       return true;
     default:

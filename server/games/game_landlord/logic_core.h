@@ -22,7 +22,7 @@ private:
 	int GetPaiType(std::vector<int> cards);
 
 	bool logic_core::IS_SHUANGFEI(std::vector<int> cards);	//双飞
-	bool logic_core::IS_ZHADAN(std::vector<int> cards);	//四张牌
+	bool logic_core::IS_SIZHANGPAI(std::vector<int> cards);	//四张牌
 	bool logic_core::IS_SANPAI(std::vector<int> cards);	//三张牌
 	bool logic_core::IS_ERPAI(std::vector<int> cards);	//两张牌
 	bool logic_core::IS_SIPAISHUN(std::vector<int> cards);	//四排 顺子
