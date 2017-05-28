@@ -31,6 +31,9 @@ public:
 	bool get_orFull();
 	bool check_ExistRealPlayer();
 	int getTablePlayerCount() { return playerMap.size(); }
+	int get_realLandlord_Id() { return realLandlord_Id; }
+	std::vector<int>& get_lastplayhand() { return lastPlayhand; }
+	int get_lastplayhand_Id() { return lastPlayhand_Id; }
 
 	e_server_error_code playhand(logic_player* player, const game_landlord_protocol::card_Info& cards);
 	e_server_error_code rob_Landlord(logic_player* player,int);

@@ -56,6 +56,7 @@ public:
 	int get_deskId() { return deskId; }
 	void set_deskId(int id) { deskId = id; }
 	void set_table(logic_table* table) { m_table = table; }
+	logic_table* get_table() { return m_table; }
 
 	void enter_game(logic_lobby* lobby);		//½øÈëÓÎÏ·
 
@@ -107,4 +108,6 @@ private:
 	e_player_state m_player_online_state;
 
 	double rob_match_cd;
+	double rob_robLandlord_cd;
+	double rob_playhand_cd;
 };

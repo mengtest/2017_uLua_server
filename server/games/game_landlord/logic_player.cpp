@@ -23,6 +23,8 @@ logic_player::logic_player(void)
 	, player_state(e_player_game_state::e_player_game_state_none)
 	, m_player_online_state(e_player_state::e_ps_none)
 	,rob_match_cd(0)
+	,rob_robLandlord_cd(0)
+	,rob_playhand_cd(0)
 {
 	logic_player_db::init_game_object();
 }
@@ -110,17 +112,27 @@ void logic_player::heartbeat(double elapsed)
 		{
 			if (rob_match_cd > 5)
 			{
-				LTablePtr table=m_room->rob_find_realplayer_table();
-				if (table.get() != nullptr)
+				if (m_table == nullptr)
 				{
-					LPlayerPtr player = game_engine::instance().get_lobby().get_player(this->get_pid());
-					if (player != logic_player::EmptyPtr)
+					LTablePtr table = m_room->rob_find_realplayer_table();
+					if (table.get() != nullptr)
 					{
-						e_server_error_code result= m_room->rob_enter_table(player, table);
-						if (result == e_server_error_code::e_error_code_success)
+						LPlayerPtr player = game_engine::instance().get_lobby().get_player(this->get_pid());
+						if (player != logic_player::EmptyPtr)
 						{
-							player_state = e_player_game_state::e_player_game_state_matching;
+							e_server_error_code result = m_room->rob_enter_table(player, table);
+							if (result == e_server_error_code::e_error_code_success)
+							{
+								player_state = e_player_game_state::e_player_game_state_matching;
+							}
 						}
+					}
+				}
+				else
+				{
+					if (player_state==e_player_game_state::e_player_game_state_none)
+					{
+						player_state = e_player_game_state::e_player_game_state_matching;
 					}
 				}
 				rob_match_cd = 0;
@@ -132,27 +144,45 @@ void logic_player::heartbeat(double elapsed)
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_matching)
 		{
+
 			
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_sendcarding)
 		{
-
+			rob_robLandlord_cd = 0;
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_robLandlord)
 		{
-
+			if (rob_robLandlord_cd > 5)
+			{
+				int or_Rob= global_random::instance().rand_int(1, 2);
+				robLandlord(or_Rob);
+			}
+			else
+			{
+				rob_robLandlord_cd += elapsed;
+			}
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_other_robLandlord)
 		{
-
+			
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_playhanding)
 		{
+			if (rob_playhand_cd > 6)
+			{
+				game_landlord_protocol::card_Info cards;
+				//playhand();
+			}
+			else
+			{
+				rob_playhand_cd += elapsed;
+			}
 			
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_other_playhanding)
 		{
-
+			rob_playhand_cd = 0;
 		}
 		else if (player_state == e_player_game_state::e_player_game_state_awarding)
 		{

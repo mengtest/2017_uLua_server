@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <cstdlib>
+#include "logic_table.h"
 
 #define CARDS_COUNT 54
 logic_core::logic_core(int deskCount)
@@ -26,18 +27,14 @@ void logic_core::init()
 	}
 	m_cards.push_back(16 * 100);
 	m_cards.push_back(17 * 100);
-
 	assert(m_cards.size()==CARDS_COUNT);
-
 	srand(time(NULL));
 	std::random_shuffle(m_cards.begin(), m_cards.end(), [](int x) { return std::rand() % x; });//洗下牌
 }
 
-
 void logic_core::send_card()
 {
 	init();
-
 	srand(time(NULL));
 	std::random_shuffle(m_cards.begin(), m_cards.end(), [](int x) { return std::rand() % x; });//洗下牌
 
@@ -73,6 +70,11 @@ void logic_core::send_card()
 
 	assert(landlord_id>=1 && landlord_id<=deskCount);
 	m_RemainlandlordCards = m_cards;
+
+	for (int i = 1; i < deskCount; i++)
+	{
+		INIT_PAI_TYPE_MAP(i);
+	}
 }
 
 int logic_core::rand(int min, int max)
@@ -90,9 +92,8 @@ int logic_core::take_one_card()
 void logic_core::playhand(int deskid,std::vector<int>& cards)
 {
 	std::vector<int>& m_desk_cards=m_cardMap[deskid];
-
 	auto var1 = cards.begin();
-	for (auto var : cards)
+	for (auto& var : cards)
 	{
 		for (; var1 != cards.end();)
 		{
@@ -107,9 +108,10 @@ void logic_core::playhand(int deskid,std::vector<int>& cards)
 			}
 		}
 	}
+	INIT_PAI_TYPE_MAP(deskid);
 }
 
-int logic_core::compare_card(std::vector<int> cards_1, std::vector<int> cards_2)
+int logic_core::compare_card(std::vector<int>& cards_1, std::vector<int>& cards_2)
 {
 	std::vector<int> sort_cards_1 = cards_1;
 	std::sort(sort_cards_1.begin(), sort_cards_1.end(), [](int x, int y) { return x<y; });
@@ -155,7 +157,7 @@ int logic_core::compare_card(std::vector<int> cards_1, std::vector<int> cards_2)
 	return 0;
 }
 
-int logic_core::getPoint(int type,std::vector<int> cards)
+int logic_core::getPoint(int type,std::vector<int>& cards)
 {
 	if (type == 1)
 	{
@@ -197,7 +199,7 @@ int logic_core::getPoint(int type,std::vector<int> cards)
 }
 
 
-int logic_core::GetPaiType(std::vector<int> sort_cards)
+int logic_core::GetPaiType(std::vector<int>& sort_cards)
 {
 
 	if (IS_SHUANGFEI(sort_cards))
@@ -245,7 +247,7 @@ int logic_core::GetPaiType(std::vector<int> sort_cards)
 
 
 //双飞
-bool logic_core::IS_SHUANGFEI(std::vector<int> cards)
+bool logic_core::IS_SHUANGFEI(std::vector<int>& cards)
 {
 	if (cards.size()==2 && (cards[0] / 100 == 14 || cards[0] / 100 == 15) && (cards[1] / 100 == 14 || cards[1] / 100 == 15))
 	{
@@ -258,7 +260,7 @@ bool logic_core::IS_SHUANGFEI(std::vector<int> cards)
 }
 
 //四张牌
-bool logic_core::IS_SIZHANGPAI(std::vector<int> cards)
+bool logic_core::IS_SIZHANGPAI(std::vector<int>& cards)
 {
 	if (cards.size() >= 4 && cards.size()<=6)
 	{
@@ -274,7 +276,7 @@ bool logic_core::IS_SIZHANGPAI(std::vector<int> cards)
 }
 
 //三张牌
-bool logic_core::IS_SANPAI(std::vector<int> cards)
+bool logic_core::IS_SANPAI(std::vector<int>& cards)
 {
 	if (cards.size() >= 3 && cards.size()<=4)
 	{
@@ -290,7 +292,7 @@ bool logic_core::IS_SANPAI(std::vector<int> cards)
 }
 
 //两张牌
-bool logic_core::IS_ERPAI(std::vector<int> cards)
+bool logic_core::IS_ERPAI(std::vector<int>& cards)
 {
 	if (cards.size() == 2 && cards[0] / 100 == cards[1] / 100)
 	{
@@ -303,7 +305,7 @@ bool logic_core::IS_ERPAI(std::vector<int> cards)
 }
 
 //四排 顺子
-bool logic_core::IS_SIPAISHUN(std::vector<int> cards)
+bool logic_core::IS_SIPAISHUN(std::vector<int>& cards)
 {
 	if (cards.size() >= 8)
 	{
@@ -347,7 +349,7 @@ bool logic_core::IS_SIPAISHUN(std::vector<int> cards)
 }
 
 //三排 顺子
-bool logic_core::IS_SANPAISHUN(std::vector<int> cards)
+bool logic_core::IS_SANPAISHUN(std::vector<int>& cards)
 {
 	if (cards.size() >= 6)
 	{
@@ -391,7 +393,7 @@ bool logic_core::IS_SANPAISHUN(std::vector<int> cards)
 }
 
 //二排顺
-bool logic_core::IS_ERPAISHUN(std::vector<int> cards)
+bool logic_core::IS_ERPAISHUN(std::vector<int>& cards)
 {
 	if (cards.size() >= 6 && cards.size()%2==0)
 	{
@@ -415,7 +417,7 @@ bool logic_core::IS_ERPAISHUN(std::vector<int> cards)
 }
 
 //单排顺
-bool logic_core::IS_DANPAISHUN(std::vector<int> cards)
+bool logic_core::IS_DANPAISHUN(std::vector<int>& cards)
 {
 	if (cards.size()>=5)
 	{
@@ -439,7 +441,7 @@ bool logic_core::IS_DANPAISHUN(std::vector<int> cards)
 }
 
 //单张牌
-bool logic_core::IS_DANPAI(std::vector<int> cards)
+bool logic_core::IS_DANPAI(std::vector<int>& cards)
 {
 	if (cards.size() == 1)
 	{
@@ -451,25 +453,25 @@ bool logic_core::IS_DANPAI(std::vector<int> cards)
 	}
 }
 
-int logic_core::FEN_SHUANGFEI(std::vector<int> cards)	//双飞
+int logic_core::FEN_SHUANGFEI(std::vector<int>& cards)	//双飞
 {
 	return INT_MAX;
 }
-int logic_core::FEN_ZHADAN(std::vector<int> cards)	//四张牌
+int logic_core::FEN_ZHADAN(std::vector<int>& cards)	//四张牌
 {
 	return cards[cards.size()-3];
 }
 
-int logic_core::FEN_SANPAI(std::vector<int> cards)	//三张牌
+int logic_core::FEN_SANPAI(std::vector<int>& cards)	//三张牌
 {
 	return cards[cards.size() - 2];
 }
 
-int logic_core::FEN_ERPAI(std::vector<int> cards)	//两张牌
+int logic_core::FEN_ERPAI(std::vector<int>& cards)	//两张牌
 {
 	return cards[0];
 }
-int logic_core::FEN_SIPAISHUN(std::vector<int> cards)	//四排 顺子
+int logic_core::FEN_SIPAISHUN(std::vector<int>& cards)	//四排 顺子
 {
 	for (size_t i = cards.size() - 1; i >= 0; i--)
 	{
@@ -481,7 +483,7 @@ int logic_core::FEN_SIPAISHUN(std::vector<int> cards)	//四排 顺子
 	return 0;
 }
 
-int logic_core::FEN_SANPAISHUN(std::vector<int> cards)	//三排 顺子
+int logic_core::FEN_SANPAISHUN(std::vector<int>& cards)	//三排 顺子
 {
 	for (size_t i = cards.size() - 1; i >= 0; i--)
 	{
@@ -492,17 +494,452 @@ int logic_core::FEN_SANPAISHUN(std::vector<int> cards)	//三排 顺子
 	}
 	return 0;
 }
-int logic_core::FEN_ERPAISHUN(std::vector<int> cards)	//二排顺
+int logic_core::FEN_ERPAISHUN(std::vector<int>& cards)	//二排顺
 {
 	return cards[cards.size() - 1]/100;
 }
-int logic_core::FEN_DANPAISHUN(std::vector<int> cards)	//单排顺
+int logic_core::FEN_DANPAISHUN(std::vector<int>& cards)	//单排顺
 {
 	return cards[cards.size()-1]/100;
 }
-int logic_core::FEN_DANPAI(std::vector<int> cards)//单张牌
+int logic_core::FEN_DANPAI(std::vector<int>& cards)//单张牌
 {
 	return cards[0];
 }
 
+//双飞
+int logic_core::IS_Contain_SHUANGFEI(std::vector<int>& cards)
+{
+	if (cards.size() >= 2)
+	{
+		int count = 0;
+		for (auto& var : cards)
+		{
+			if (var / 100 == 16 || var / 100 == 17)
+			{
+				count++;
+			}
+		}
+		if (count == 2)
+		{
+			return 1;
+		}
+	}
+	return -1;
+}
+
+//四张牌
+int logic_core::IS_Contain_SIZHANGPAI(std::vector<int>& cards,int pai)
+{
+	if (cards.size() >= 4)
+	{
+		int count = 0;
+		for (auto& var : cards)
+		{
+			if (var / 100 == pai)
+			{
+				count++;
+			}
+		}
+		if (count == 4)
+		{
+			return 1;
+		}
+	}
+	return -1;
+}
+
+//三张牌
+int logic_core::IS_Contain_SANPAI(std::vector<int>& cards,int pai)
+{
+	if (cards.size() >= 3)
+	{
+		int count = 0;
+		for (auto& var : cards)
+		{
+			if (var / 100 == pai)
+			{
+				count++;
+			}
+		}
+		if (count == 3)
+		{
+			return 1;
+		}
+	}
+	return -1;
+}
+
+//两张牌
+int logic_core::IS_Contain_ERPAI(std::vector<int>& cards,int pai)
+{
+	if (cards.size() >= 2)
+	{
+		int count = 0;
+		for (auto& var : cards)
+		{
+			if (var / 100 == pai)
+			{
+				count++;
+			}
+		}
+		if (count ==2)
+		{
+			return 1;
+		}
+	}
+	return -1;
+}
+
+//单张牌
+int logic_core::IS_Contain_DANPAI(std::vector<int>& cards, int pai)
+{
+	int count = 0;
+	if (cards.size() >= 1)
+	{
+		for (int i = 0; i < cards.size(); i++)
+		{
+			if (cards[i] / 100 == pai)
+			{
+				count++;
+			}
+		}
+	}
+	if (count == 1)
+	{
+		return count;
+	}
+	return -1;
+}
+
+//四排 顺子
+int logic_core::IS_Contain_SIPAISHUN(std::vector<int>& cards,int maxpai)
+{
+	int count = 0;
+	if (cards.size() >= 8 && maxpai>=4)
+	{
+		for (int i = maxpai; i >= 3; i--)
+		{
+			int result=IS_Contain_SIZHANGPAI(cards, i);
+			 if(result<0)
+			{
+				if (count >= 2)
+				{
+					return count;
+				}
+				else
+				{
+					return -1;
+				}
+			 }
+			 else if(result>0)
+			 {
+				 count++;
+			 }
+		}
+	}
+	return -1;
+}
+
+//三排 顺子
+int logic_core::IS_Contain_SANPAISHUN(std::vector<int>& cards,int maxpai)
+{
+	int count = 0;
+	if (cards.size() >= 6 && maxpai>=4)
+	{
+		for (int i = maxpai; i >= 3; i--)
+		{
+			int result = IS_Contain_SANPAI(cards, i);
+			if (result<0)
+			{
+				if (count >= 2)
+				{
+					return count;
+				}
+				else
+				{
+					return -1;
+				}
+			}
+			else if (result>0)
+			{
+				count++;
+			}
+		}
+	}
+	return -1;
+}
+
+//二排顺
+int logic_core::IS_Contain_ERPAISHUN(std::vector<int>& cards,int maxpai)
+{
+	int count = 0;
+	if (cards.size() >= 6 && maxpai>=5)
+	{
+		for (int i = maxpai; i >= 3; i--)
+		{
+			int result = IS_Contain_ERPAI(cards, i);
+			if (result<0)
+			{
+				if (count >= 3)
+				{
+					return count;
+				}
+				else
+				{
+					return -1;
+				}
+			}
+			else if (result>0)
+			{
+				count++;
+			}
+		}
+	}
+	return -1;
+}
+
+//单排顺
+int logic_core::IS_Contain_DANPAISHUN(std::vector<int>& cards,int maxpai)
+{
+	int count = 0;
+	if (cards.size() >= 5 && maxpai>=7)
+	{
+		for (int i = maxpai; i >= 3; i--)
+		{
+			int result = IS_Contain_DANPAI(cards, i);
+			if (result<0)
+			{
+				if (count >= 5)
+				{
+					return count;
+				}
+				else
+				{
+					return -1;
+				}
+			}
+			else if (result>0)
+			{
+				count++;
+			}
+		}
+	}
+	return -1;
+}
+
+std::vector<int> logic_core::Get_SHUANGFEI(std::vector<int>& cards)	//双飞
+{
+	std::vector<int> result_cards;
+	result_cards.push_back(1600);
+	result_cards.push_back(1700);
+	return result_cards;
+}
+
+std::vector<int> logic_core::Get_SIPAI(std::vector<int>& cards, int pai)	//四张牌
+{
+	std::vector<int> result_cards;
+
+	for (int i = 0; i < cards.size(); i++)
+	{
+		if (cards[i] / 100 == pai)
+		{
+			result_cards.push_back(cards[i]);
+		}
+	}
+
+	return result_cards;
+}
+
+std::vector<int> logic_core::Get_SANPAI(std::vector<int>& cards, int pai)	//三张牌
+{
+	std::vector<int> result_cards;
+	for (int i = 0; i < cards.size(); i++)
+	{
+		if (cards[i] / 100 == pai)
+		{
+			result_cards.push_back(cards[i]);
+		}
+	}
+	return result_cards;
+}
+std::vector<int> logic_core::Get_ERPAI(std::vector<int>& cards, int pai)	//两张牌
+{
+	std::vector<int> result_cards;
+	for (int i = 0; i < cards.size(); i++)
+	{
+		if (cards[i] / 100 == pai)
+		{
+			result_cards.push_back(cards[i]);
+		}
+	}
+	return result_cards;
+}
+std::vector<int> logic_core::Get_DANPAI(std::vector<int>& cards, int pai)//单张牌
+{
+	std::vector<int> result_cards;
+	for (int i = 0; i < cards.size(); i++)
+	{
+		if (cards[i] / 100 == pai)
+		{
+			result_cards.push_back(cards[i]);
+		}
+	}
+	return result_cards;
+}
+std::vector<int> logic_core::Get_SIPAISHUN(std::vector<int>& cards, int maxpai,int count)	//四排 顺子
+{
+	std::vector<int> result_cards;
+	if (cards.size() >= 5 && maxpai >= 7)
+	{
+		for (int i = maxpai; i >= 3; i--)
+		{
+			int result = IS_Contain_DANPAI(cards, i);
+			if (result<0)
+			{
+				if (count >= 5)
+				{
+					return count;
+				}
+				else
+				{
+					return -1;
+				}
+			}
+			else if (result>0)
+			{
+				count++;
+			}
+		}
+	}
+	return result_cards;
+}
+std::vector<int> logic_core::Get_SANPAISHUN(std::vector<int>& cards, int maxpai)	//三排 顺子
+{
+
+}
+std::vector<int> logic_core::Get_ERPAISHUN(std::vector<int>& cards, int maxpai)	//二排顺
+{
+
+}
+std::vector<int> logic_core::Get_DANPAISHUN(std::vector<int>& cards, int maxpai)	//单排顺
+{
+
+}
+
+std::vector<int> logic_core::Get_PAI(int type,std::vector<int>& cards, int )	//单排顺
+{
+
+}
+
+void logic_core::INIT_PAI_TYPE_MAP(int deskId)
+{
+	if (m_desk_type_map.find(deskId) != m_desk_type_map.end())
+	{
+		m_desk_type_map[deskId].clear();
+	}
+	std::vector<int>& cards = m_cardMap[deskId];
+
+	if (IS_Contain_SHUANGFEI(cards))
+	{
+		m_desk_type_map[deskId][1].push_back(16);
+		m_desk_type_map[deskId][1].push_back(17);
+	}
+
+	for (int i = 3; i <= 17; i++)
+	{
+		if (IS_Contain_SIZHANGPAI(cards, i))
+		{
+			m_desk_type_map[deskId][2].push_back(i);
+		}
+		else if (IS_Contain_SANPAI(cards, i))
+		{
+			m_desk_type_map[deskId][3].push_back(i);
+		}
+		else if (IS_Contain_ERPAI(cards, i))
+		{
+			m_desk_type_map[deskId][4].push_back(i);
+		}
+		else if (IS_Contain_DANPAI(cards, i))
+		{
+			m_desk_type_map[deskId][9].push_back(i);
+		}
+		else if (IS_Contain_SIPAISHUN(cards,i))
+		{
+			m_desk_type_map[deskId][5].push_back(i);
+		}
+		else if (IS_Contain_SANPAISHUN(cards, i))
+		{
+			m_desk_type_map[deskId][6].push_back(i);
+		}
+		else if (IS_Contain_ERPAISHUN(cards, i))
+		{
+			m_desk_type_map[deskId][7].push_back(i);
+		}
+		else if (IS_Contain_DANPAISHUN(cards, i))
+		{
+			m_desk_type_map[deskId][8].push_back(i);
+		}
+	}
+}
+
+
+game_landlord_protocol::card_Info logic_core::get_rob_playhand(logic_player* player)
+{
+	game_landlord_protocol::card_Info result_cards;
+	int realLandlord = player->get_table()->get_realLandlord_Id();
+	int deskId = player->get_deskId();
+	std::vector<int>& lastplayhand = player->get_table()->get_lastplayhand();
+	int lastplayhand_Id = player->get_table()->get_lastplayhand_Id();
+	std::map<int, std::vector<int>>& m_type_map = m_desk_type_map[deskId];
+
+	int game_state = 1;//1:前期，2后期
+	if (deskId == realLandlord)
+	{
+		for (auto& var : m_cardMap)
+		{
+			if (var.first != deskId && var.second.size() <= 2)
+			{
+				game_state = 2;
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (m_cardMap[realLandlord].size() <= 2)
+		{
+			game_state = 2;
+		}
+	}
+
+	std::vector<int> sort_cards_1 = m_cardMap[deskId];
+	std::sort(sort_cards_1.begin(), sort_cards_1.end(), [](int x, int y) { return x<y; });
+
+	int priority[9] = {9,8,7,4,6,3,5,2,1};
+	if (lastplayhand_Id != 0 && lastplayhand_Id != deskId)//跟牌
+	{
+		std::vector<int> sort_cards_2 = lastplayhand;
+		std::sort(sort_cards_2.begin(), sort_cards_2.end(), [](int x, int y) { return x < y; });
+
+		int type_2 = GetPaiType(sort_cards_2);
+	}
+	else
+	{
+		result_cards.add_cards(sort_cards_1[0]);
+	}
+	result_cards.set_deskid(deskId);
+	return result_cards;
+}
+/*std::vector<int>& logic_core::get_ZUIXIAO_PAI(std::vector<int> cards_1)
+{
+	
+
+}
+
+std::vector<int>& logic_core::get_ZUIXIAO_PAI(std::vector<int>& cards_1,std::vector<int>& cards_2)
+{
+	int type = GetPaiType(cards_2);
+
+}*/
 
